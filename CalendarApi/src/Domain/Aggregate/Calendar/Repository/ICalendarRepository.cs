@@ -4,6 +4,8 @@
 
     public interface ICalendarRepository : IRepository<Calendar>
     {
-        Task<Calendar?> GetByOwnerIdAsync(Guid ownerId, CancellationToken token);
+        Task<Calendar?> GetByOwnerIdAsync(
+            Guid ownerId,
+            CancellationToken token);
     }
 }

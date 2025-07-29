@@ -13,6 +13,7 @@
         #region Relationships
         public ICollection<Event> Events { get; set; } = new List<Event>();
         #endregion
+
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return this.UUId;
