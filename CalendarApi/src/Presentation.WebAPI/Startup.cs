@@ -1,4 +1,4 @@
-﻿namespace HustleAddiction.Platform.UserManagementAPI.Presentation.WebAPI
+﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI
 {
     public class Startup
     {
