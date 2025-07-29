@@ -46,6 +46,6 @@ results/
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
-UserManagementApi/Presentation.WebAPI/obj/project.nuget.cache
+CalendarApi/Presentation.WebAPI/obj/project.nuget.cache
 
-UserManagementApi/Presentation.WebAPI/obj/project.assets.json
+CalendarApi/Presentation.WebAPI/obj/project.assets.json
