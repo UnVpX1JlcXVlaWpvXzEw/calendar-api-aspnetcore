@@ -5,8 +5,6 @@ using CalendarEntity = HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Cal
 
 namespace HustleAddiction.Platform.CalendarApi.Domain.EntityConfiguration.Calendar
 {
-
-
     public class CalendarEntityTypeConfiguration : IEntityTypeConfiguration<CalendarEntity>
     {
         public void Configure(EntityTypeBuilder<CalendarEntity> builder)
