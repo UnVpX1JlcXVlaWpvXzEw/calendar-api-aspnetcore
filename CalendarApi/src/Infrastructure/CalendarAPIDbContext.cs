@@ -1,6 +1,8 @@
 ﻿namespace HustleAddiction.Platform.CalendarApi.Domain
 {
     using Domain.SeedWork;
+    using HustleAddiction.Platform.CalendarApi.Domain.EntityConfiguration.Calendar;
+    using HustleAddiction.Platform.CalendarApi.Infrastructure.EntityConfiguration.Calendar;
     using MediatR;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
@@ -48,7 +50,7 @@
             optionsBuilder
                 .UseLazyLoadingProxies()
                 .UseMySql(
-                    this.configuration.GetSection(CalendarAPIDbContext.DatabaseConnectionSection).Value,
+                    this.configuration.GetSection(DatabaseConnectionSection).Value,
                     new MySqlServerVersion(new Version(8, 0, 28)));
 
             base.OnConfiguring(optionsBuilder);
@@ -64,6 +66,9 @@
             {
                 property.SetColumnType("decimal(18,5)");
             }
+
+            modelBuilder.ApplyConfiguration(new CalendarEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new EventEntityTypeConfiguration());
         }
 
         private void AddTimestamps()

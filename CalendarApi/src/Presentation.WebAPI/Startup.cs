@@ -1,5 +1,8 @@
 ﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI
 {
+    using HustleAddiction.Platform.CalendarApi.Domain;
+    using Microsoft.EntityFrameworkCore;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -10,12 +13,27 @@
 
         public void Configure(WebApplication app)
         {
-
+            MigrateDatabase(app);
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            throw new NotImplementedException();
+            services.AddDbContext<CalendarAPIDbContext>(options =>
+                options.UseLazyLoadingProxies(),
+                ServiceLifetime.Scoped);
+        }
+
+        private static void MigrateDatabase(WebApplication app)
+        {
+            using var scope = app.Services
+                .CreateScope();
+
+            var context = scope.ServiceProvider
+                .GetRequiredService<CalendarAPIDbContext>();
+
+            context.Database.MigrateAsync()
+              .GetAwaiter()
+              .GetResult();
         }
     }
 }
