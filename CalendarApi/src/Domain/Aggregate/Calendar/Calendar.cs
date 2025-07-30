@@ -6,13 +6,11 @@
     {
         public Guid Id { get; set; }
 
-        public string Name { get; set; } = null!;
+        public string Name { get; set; }
 
         public Guid OwnerId { get; set; }
 
-        #region Relationships
         public ICollection<Event> Events { get; set; } = new List<Event>();
-        #endregion
 
         protected override IEnumerable<object> GetAtomicValues()
         {

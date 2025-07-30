@@ -58,6 +58,9 @@
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new CalendarEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new EventEntityTypeConfiguration());
+
             var properties = modelBuilder.Model.GetEntityTypes()
                 .SelectMany(t => t.GetProperties())
                 .Where(p => p.ClrType == typeof(decimal) || p.ClrType == typeof(decimal?));
@@ -66,9 +69,6 @@
             {
                 property.SetColumnType("decimal(18,5)");
             }
-
-            modelBuilder.ApplyConfiguration(new CalendarEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new EventEntityTypeConfiguration());
         }
 
         private void AddTimestamps()

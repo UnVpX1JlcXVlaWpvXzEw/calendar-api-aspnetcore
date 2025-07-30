@@ -1,17 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using CalendarEntity = HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Calendar;
-
 
 namespace HustleAddiction.Platform.CalendarApi.Domain.EntityConfiguration.Calendar
 {
-    public class CalendarEntityTypeConfiguration : IEntityTypeConfiguration<CalendarEntity>
+    internal class CalendarEntityTypeConfiguration : EntityTypeConfiguration<CalendarEntity>
     {
-        public void Configure(EntityTypeBuilder<CalendarEntity> builder)
-        {
-            builder.ToTable("Calendars");
+        protected override string TableName => "Calendars";
 
+        protected override void ConfigureEntity(EntityTypeBuilder<CalendarEntity> builder)
+        {
             builder.HasKey(c => c.Id);
+
             builder.Property(c => c.Name)
                 .IsRequired()
                 .HasMaxLength(100);

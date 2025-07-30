@@ -8,7 +8,8 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Repository
 {
     public class CalendarRepository : GenericRepository<Calendar>, ICalendarRepository
     {
-        public CalendarRepository(CalendarAPIDbContext context) : base(context)
+        public CalendarRepository(CalendarAPIDbContext context)
+            : base(context)
         {
         }
 
@@ -18,7 +19,8 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Repository
         {
             return await this.Entities
                 .FirstOrDefaultAsync(
-                    c => c.OwnerId == ownerId, token);
+                    c => c.OwnerId == ownerId,
+                    token);
         }
     }
 }

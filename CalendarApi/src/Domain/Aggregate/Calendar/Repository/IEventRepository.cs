@@ -7,6 +7,7 @@ namespace HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Reposit
         Task<IEnumerable<Event>> GetByOwnerIdAsync(
             Guid ownerId,
             CancellationToken token);
+
         Task<IEnumerable<Event>> GetEventsInRangeAsync(
             Guid ownerId,
             DateTime start,

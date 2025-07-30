@@ -8,7 +8,8 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Repository
 {
     public class EventRepository : GenericRepository<Event>, IEventRepository
     {
-        public EventRepository(CalendarAPIDbContext context) : base(context)
+        public EventRepository(CalendarAPIDbContext context)
+            : base(context)
         {
         }
 
@@ -28,8 +29,8 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Repository
             CancellationToken token)
         {
             return await this.Entities
-                .Where(
-                    e => e.OwnerId == ownerId &&
+                .Where(e =>
+                    e.OwnerId == ownerId &&
                     e.StartTime >= start &&
                     e.EndTime <= end)
                 .ToListAsync(token);
