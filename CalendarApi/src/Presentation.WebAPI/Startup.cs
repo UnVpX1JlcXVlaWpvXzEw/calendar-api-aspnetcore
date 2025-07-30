@@ -1,5 +1,8 @@
 ﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI
 {
+
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Cors.Configuration;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Exception.Middleware;
     using HustleAddiction.Platform.CalendarApi.Domain;
     using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +16,17 @@
 
         public void Configure(WebApplication app)
         {
+            app.UseCors(this.Configuration);
+
+            app.UseExceptionMiddleware();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Calendar API V1");
+            });
+          
             MigrateDatabase(app);
         }
 
