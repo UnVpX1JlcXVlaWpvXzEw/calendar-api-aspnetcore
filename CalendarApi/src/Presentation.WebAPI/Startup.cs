@@ -1,7 +1,10 @@
 ﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI
 {
+
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Cors.Configuration;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Exception.Middleware;
+    using HustleAddiction.Platform.CalendarApi.Domain;
+    using Microsoft.EntityFrameworkCore;
 
     public class Startup
     {
@@ -23,11 +26,28 @@
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Calendar API V1");
             });
+          
+            MigrateDatabase(app);
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            throw new NotImplementedException();
+            services.AddDbContext<CalendarAPIDbContext>(options =>
+                options.UseLazyLoadingProxies(),
+                ServiceLifetime.Scoped);
+        }
+
+        private static void MigrateDatabase(WebApplication app)
+        {
+            using var scope = app.Services
+                .CreateScope();
+
+            var context = scope.ServiceProvider
+                .GetRequiredService<CalendarAPIDbContext>();
+
+            context.Database.MigrateAsync()
+              .GetAwaiter()
+              .GetResult();
         }
     }
 }
