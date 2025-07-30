@@ -15,7 +15,7 @@
             ?? [DefaultAllowedOrigins];
 
         internal static string GetCorsOriginCollectionName(IConfiguration configuration)
-                    => configuration.GetSection(CorsOriginCollectionName.Value).Value
+            => configuration.GetSection(CorsOriginCollectionName.Value).Value
             ?? DefaultOriginCollectionName;
     }
 }

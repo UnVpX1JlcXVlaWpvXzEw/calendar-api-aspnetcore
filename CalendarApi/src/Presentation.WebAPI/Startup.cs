@@ -21,7 +21,7 @@
 
             app.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "User Management API V1");
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Calendar API V1");
             });
         }
 
