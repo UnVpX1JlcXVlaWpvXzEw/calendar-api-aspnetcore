@@ -1,18 +1,13 @@
 ﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI
 {
-
-    using HustleAddiction.Platform.CalendarApi.Domain;
+    using HustleAddiction.Platform.CalendarApi.Infrastructure;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Cors.Configuration;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Exception.Middleware;
     using Microsoft.EntityFrameworkCore;
 
-    public class Startup
+    public class Startup(IConfiguration configuration)
     {
-        public Startup(IConfiguration configuration)
-        {
-            this.Configuration = configuration;
-        }
-        public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; } = configuration;
 
         public void Configure(WebApplication app)
         {
@@ -47,8 +42,8 @@
                 .GetRequiredService<CalendarAPIDbContext>();
 
             context.Database.MigrateAsync()
-              .GetAwaiter()
-              .GetResult();
+                .GetAwaiter()
+                .GetResult();
         }
     }
 }

@@ -4,13 +4,13 @@
 
     public class Calendar : EntityBase, IAggregateRoot
     {
-        public Guid Id { get; set; }
+        private readonly List<Event> events = [];
 
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         public Guid OwnerId { get; set; }
 
-        public ICollection<Event> Events { get; set; } = new List<Event>();
+        public virtual IReadOnlyCollection<Event> Events => this.events;
 
         protected override IEnumerable<object> GetAtomicValues()
         {

@@ -27,12 +27,10 @@
                 return true;
             }
 
-            if ((other as EntityBase).IsTransient())
-            {
-                return false;
-            }
+            var isTransient = (other as EntityBase)?.IsTransient();
 
-            return base.Equals(other);
+            return (isTransient is null || !isTransient.Value) 
+                && base.Equals(other);
         }
 
         public bool IsTransient() => this.Id == default(Int32);

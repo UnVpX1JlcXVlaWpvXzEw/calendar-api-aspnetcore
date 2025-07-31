@@ -1,4 +1,4 @@
-﻿namespace HustleAddiction.Platform.CalendarApi.Domain.EntityConfiguration
+﻿namespace HustleAddiction.Platform.CalendarApi.Infrastructure.EntityConfiguration
 {
     using Domain.SeedWork;
     using Microsoft.EntityFrameworkCore;

@@ -4,16 +4,16 @@
     {
         IUnitOfWork UnitOfWork { get; }
 
-        Task<TEntity> AddAsync(TEntity entity, CancellationToken token);
+        Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default);
 
-        Task AddRangeAsync(TEntity[] entity, CancellationToken token);
+        Task AddRangeAsync(TEntity[] entity, CancellationToken cancellationToken = default);
 
-        Task<List<TEntity>> GetAllAsync(CancellationToken token);
+        Task<List<TEntity>> GetAllAsync(CancellationToken cancellationToken = default);
 
-        Task<TEntity?> GetAsync(Guid uuid, CancellationToken token);
+        Task<TEntity?> GetAsync(Guid uuid, CancellationToken cancellationToken = default);
 
-        Task<bool> Remove(TEntity entity, CancellationToken token);
+        Task<bool> Remove(TEntity entity, CancellationToken cancellationToken = default);
 
-        Task<TEntity> Update(TEntity entity, CancellationToken token);
+        Task<TEntity> Update(TEntity entity, CancellationToken cancellationToken = default);
     }
 }

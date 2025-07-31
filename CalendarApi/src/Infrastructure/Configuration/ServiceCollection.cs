@@ -1,4 +1,4 @@
-﻿namespace HustleAddiction.Platform.CalendarApi.Domain.Configuration
+﻿namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Configuration
 {
     using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Repository;
     using HustleAddiction.Platform.CalendarApi.Infrastructure.Repository;

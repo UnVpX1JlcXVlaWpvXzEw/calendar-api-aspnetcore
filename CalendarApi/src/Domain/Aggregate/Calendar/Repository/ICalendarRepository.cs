@@ -6,6 +6,6 @@
     {
         Task<Calendar?> GetByOwnerIdAsync(
             Guid ownerId,
-            CancellationToken token);
+            CancellationToken cancellationToken = default);
     }
 }

@@ -4,14 +4,11 @@ namespace HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Reposit
 {
     public interface IEventRepository : IRepository<Event>
     {
-        Task<IEnumerable<Event>> GetByOwnerIdAsync(
-            Guid ownerId,
-            CancellationToken token);
+        Task<IEnumerable<Event>> GetByOwnerIdAsync(CancellationToken cancellationToken = default);
 
         Task<IEnumerable<Event>> GetEventsInRangeAsync(
-            Guid ownerId,
             DateTime start,
             DateTime end,
-            CancellationToken token);
+            CancellationToken cancellationToken = default);
     }
 }

@@ -1,23 +1,25 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using CalendarEntity = HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Calendar;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar;
 
-namespace HustleAddiction.Platform.CalendarApi.Domain.EntityConfiguration.Calendar
+namespace HustleAddiction.Platform.CalendarApi.Infrastructure.EntityConfiguration.Calendar
 {
-    internal class CalendarEntityTypeConfiguration : EntityTypeConfiguration<CalendarEntity>
+    internal class CalendarEntityTypeConfiguration : EntityTypeConfiguration<Domain.Aggregate.Calendar.Calendar>
     {
         protected override string TableName => "Calendars";
 
-        protected override void ConfigureEntity(EntityTypeBuilder<CalendarEntity> builder)
+        protected override void ConfigureEntity(EntityTypeBuilder<Domain.Aggregate.Calendar.Calendar> builder)
         {
-            builder.HasKey(c => c.Id);
-
             builder.Property(c => c.Name)
                 .IsRequired()
                 .HasMaxLength(100);
 
+            builder.Property(c => c.OwnerId)
+                .IsRequired();
+
             builder.HasMany(c => c.Events)
                 .WithOne()
-                .HasForeignKey(e => e.OwnerId);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

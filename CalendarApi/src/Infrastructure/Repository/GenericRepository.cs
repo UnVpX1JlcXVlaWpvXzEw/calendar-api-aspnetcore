@@ -1,58 +1,51 @@
-﻿namespace HustleAddiction.Platform.CalendarApi.Domain.Repository
+﻿namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Repository
 {
     using Domain.SeedWork;
     using Microsoft.EntityFrameworkCore;
 
-    public class GenericRepository<Entity> : IRepository<Entity>
+    public class GenericRepository<Entity>(CalendarAPIDbContext context) : IRepository<Entity>
             where Entity : EntityBase
     {
-        protected readonly CalendarAPIDbContext Context;
+        protected readonly CalendarAPIDbContext Context = context;
 
-        protected readonly DbSet<Entity> Entities;
-
-        public GenericRepository(CalendarAPIDbContext context)
-        {
-            this.Context = context;
-
-            this.Entities = context.Set<Entity>();
-        }
+        protected readonly DbSet<Entity> Entities = context.Set<Entity>();
 
         public IUnitOfWork UnitOfWork => this.Context;
 
-        public async Task<Entity> AddAsync(Entity entity, CancellationToken token)
+        public async Task<Entity> AddAsync(Entity entity, CancellationToken cancellationToken = default)
         {
-            var entityEntry = await this.Entities.AddAsync(entity, token);
+            var entityEntry = await this.Entities.AddAsync(entity, cancellationToken);
 
             return entityEntry.Entity;
         }
 
-        public async Task AddRangeAsync(Entity[] entity, CancellationToken token)
+        public async Task AddRangeAsync(Entity[] entity, CancellationToken cancellationToken = default)
         {
             await this.Entities.AddRangeAsync(entity);
         }
 
-        public async Task<List<Entity>> GetAllAsync(CancellationToken token)
+        public async Task<List<Entity>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            return await this.Entities.ToListAsync(token);
+            return await this.Entities.ToListAsync(cancellationToken);
         }
 
-        public async Task<Entity> GetAsync(Guid uuid, CancellationToken token)
+        public async Task<Entity?> GetAsync(Guid uuid, CancellationToken cancellationToken = default)
         {
-            return await this.Entities.FirstOrDefaultAsync(e => e.UUId == uuid, token);
+            return await this.Entities.FirstOrDefaultAsync(e => e.UUId == uuid, cancellationToken);
         }
 
-        public async Task<bool> Remove(Entity entity, CancellationToken token)
+        public Task<bool> Remove(Entity entity, CancellationToken cancellationToken = default)
         {
-            await Task.FromResult(this.Entities.Remove(entity));
+            this.Entities.Remove(entity);
 
-            return true;
+            return Task.FromResult(true);
         }
 
-        public async Task<Entity> Update(Entity entity, CancellationToken token)
+        public Task<Entity> Update(Entity entity, CancellationToken cancellationToken = default)
         {
-            var dataEntity = await Task.FromResult(this.Entities.Update(entity));
+            var dataEntity = this.Entities.Update(entity);
 
-            return dataEntity.Entity;
+            return Task.FromResult(dataEntity.Entity);
         }
     }
 }

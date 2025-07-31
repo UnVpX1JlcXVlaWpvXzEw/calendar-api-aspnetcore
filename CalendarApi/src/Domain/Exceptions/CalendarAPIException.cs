@@ -41,16 +41,5 @@ namespace HustleAddiction.Platform.CalendarApi.Domain.Exceptions
         }
 
         public int ErrorCode => this.errorCode;
-
-        [ExcludeFromCodeCoverage]
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-
-            info.AddValue(
-                nameof(this.ErrorCode),
-                this.ErrorCode,
-                typeof(int));
-        }
     }
 }

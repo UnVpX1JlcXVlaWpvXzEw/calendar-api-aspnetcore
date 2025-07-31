@@ -12,22 +12,6 @@ src/Presentation.WebAPI/bin/
 
 src/Presentation.WebAPI/obj/
 
-src/DbMigrator/bin/
-
-src/DbMigrator/obj/
-
-tests/Domain.Tests/obj/
-
-tests/Domain.Tests/bin/
-
-tests/Infrastructure.Tests/obj/
-
-tests/Infrastructure.Tests/bin/
-
-tests/Presentation.WebAPI.Tests/obj/
-
-tests/Presentation.WebAPI.Tests/bin/
-
 **/Properties/launchSettings.json
 
 dependencies/ConfigurationCollector/bin/

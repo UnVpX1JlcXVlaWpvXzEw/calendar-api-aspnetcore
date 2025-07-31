@@ -9,7 +9,7 @@
                 return true;
             }
 
-            if (other == null || other.GetType() != GetType())
+            if (other.GetType() != GetType())
             {
                 return false;
             }
@@ -17,7 +17,7 @@
             return base.Equals((ValueObject)other);
         }
 
-        public ValueObject GetCopy()
+        public ValueObject? GetCopy()
         {
             return this.MemberwiseClone() as ValueObject;
         }

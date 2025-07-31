@@ -2,19 +2,25 @@
 
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
-		<RootNamespace>HustleAddiction.Platform.CalendarApi.Domain</RootNamespace>
+		<RootNamespace>HustleAddiction.Platform.CalendarApi.Infrastructure</RootNamespace>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="CalendarAPIDbContext\" />
+	  <Compile Remove="CalendarAPIDbContext\**" />
+	  <EmbeddedResource Remove="CalendarAPIDbContext\**" />
+	  <None Remove="CalendarAPIDbContext\**" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.7" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.0.7" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.13" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.13" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.13" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.13">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.3" />
 	</ItemGroup>
 

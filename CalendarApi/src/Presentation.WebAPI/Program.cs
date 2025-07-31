@@ -12,7 +12,7 @@ var app = builder.Build();
 
 startup.Configure(app);
 
-app.Run();
+await app.RunAsync();
 
 static WebApplicationBuilder CreateBuilder(string[] args)
 {
