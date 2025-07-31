@@ -3,7 +3,6 @@
     using Domain.SeedWork;
     using HustleAddiction.Platform.CalendarApi.Domain.EntityConfiguration.Calendar;
     using HustleAddiction.Platform.CalendarApi.Infrastructure.EntityConfiguration.Calendar;
-    using MediatR;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using System;
@@ -18,16 +17,13 @@
 
         private readonly IConfiguration configuration;
 
-        private readonly IMediator mediator;
 
         public CalendarAPIDbContext(
             IConfiguration configuration,
-            IMediator mediator,
             DbContextOptions<CalendarAPIDbContext> options)
             : base(options)
         {
             this.configuration = configuration;
-            this.mediator = mediator;
         }
 
         public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
