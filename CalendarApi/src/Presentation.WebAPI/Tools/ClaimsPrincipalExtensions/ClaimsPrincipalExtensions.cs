@@ -7,7 +7,10 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.ClaimsP
     {
         public static bool TryGetUsername(this ClaimsPrincipal principal, out string? username)
         {
-            username = principal.Claims.FirstOrDefault(c => c.Type == JwtClaimTypes.Name)?.Value;
+            username = principal.Claims
+                .FirstOrDefault(
+                c => c.Type == JwtClaimTypes.Name)?
+                .Value;
             return !string.IsNullOrWhiteSpace(username);
         }
 

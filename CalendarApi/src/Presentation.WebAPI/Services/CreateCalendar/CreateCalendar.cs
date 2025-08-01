@@ -1,24 +1,22 @@
 ﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateCalendar
 {
     using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar;
-    using HustleAddiction.Platform.CalendarApi.Infrastructure;
+    using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Repository;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Request;
-    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Response;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.CurrentUserInfoProvider;
 
     public class CreateCalendar : ICreateCalendar
     {
-        private readonly CalendarAPIDbContext context;
+        private readonly ICalendarRepository calendarRepository;
         private readonly ICurrentUserInfoProvider currentUserInfoProvider;
 
-        public CreateCalendar(IServiceProvider provider)
+        public CreateCalendar(ICalendarRepository calendarRepository, ICurrentUserInfoProvider currentUserInfoProvider)
         {
-            context = provider.GetRequiredService<CalendarAPIDbContext>();
-            currentUserInfoProvider = provider
-                .GetRequiredService<ICurrentUserInfoProvider>();
+            this.calendarRepository = calendarRepository;
+            this.currentUserInfoProvider = currentUserInfoProvider;
         }
 
-        public async Task<CreateCalendarResponse> CreateAsync(
+        public async Task<Guid> CreateAsync(
             CreateCalendarRequest request,
             CancellationToken cancellationToken)
         {
@@ -30,13 +28,10 @@
                 OwnerId = ownerId
             };
 
-            await context.Set<Calendar>().AddAsync(calendar, cancellationToken);
-            await context.SaveEntitiesAsync(cancellationToken);
+            await calendarRepository.AddAsync(calendar, cancellationToken);
+            await calendarRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
 
-            return new CreateCalendarResponse
-            {
-                Id = calendar.UUId
-            };
+            return calendar.UUId;
         }
     }
 }

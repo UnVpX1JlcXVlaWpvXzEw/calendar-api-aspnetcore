@@ -4,6 +4,6 @@
     {
         Task<Guid> GetUserId(CancellationToken cancellationToken = default);
 
-        string GetUsername();
+        Task<string> GetUsername();
     }
 }

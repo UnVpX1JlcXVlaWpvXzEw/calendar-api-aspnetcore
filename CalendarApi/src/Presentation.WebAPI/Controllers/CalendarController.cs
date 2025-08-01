@@ -1,5 +1,4 @@
 ﻿using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Request;
-using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Response;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateCalendar;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Exception.Common;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +18,7 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(CreateCalendarResponse), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(Guid), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> CreateCalendarAsync(
@@ -31,11 +30,11 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
                 return BadRequest();
             }
 
-            var response = await createCalendar.CreateAsync(
+            var id = await createCalendar.CreateAsync(
                 request,
                 cancellationToken);
 
-            return Created(string.Empty, response);
+            return Created(string.Empty, id);
         }
     }
 }

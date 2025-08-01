@@ -1,4 +1,5 @@
 ﻿using HustleAddiction.Platform.CalendarApi.Infrastructure;
+using HustleAddiction.Platform.CalendarApi.Infrastructure.Configuration;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Configuration;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Cors.Configuration;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Exception.Middleware;
@@ -43,6 +44,7 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI
             //services.AddAuthorization();
 
             services.RegisterPresentationServices(Configuration);
+            services.RegisterInfraredServices();
 
             services.AddCors(Configuration);
 
@@ -73,9 +75,13 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI
 
         private static void MigrateDatabase(WebApplication app)
         {
-            using var scope = app.Services.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<CalendarAPIDbContext>();
-            context.Database.MigrateAsync().GetAwaiter().GetResult();
+            using var scope = app.Services
+                .CreateScope();
+            var context = scope.ServiceProvider
+                .GetRequiredService<CalendarAPIDbContext>();
+            context.Database.MigrateAsync()
+                .GetAwaiter()
+                .GetResult();
         }
     }
 }
