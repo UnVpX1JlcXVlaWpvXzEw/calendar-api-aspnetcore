@@ -5,11 +5,13 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Current
     public class CurrentUserInfoProvider : ICurrentUserInfoProvider
     {
         private readonly IHttpContextAccessor httpContextAccessor;
+
         private string? username;
 
         public CurrentUserInfoProvider(IServiceProvider provider)
         {
             ArgumentNullException.ThrowIfNull(provider, nameof(provider));
+
             httpContextAccessor = provider.GetRequiredService<IHttpContextAccessor>();
         }
 
@@ -27,9 +29,10 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Current
             //return Task.FromResult(userId);
         }
 
-        public string GetUsername()
+        public Task<string> GetUsername()
         {
-            if (!string.IsNullOrWhiteSpace(username)) return username!;
+            if (!string.IsNullOrWhiteSpace(username))
+                return Task.FromResult(username!);
 
             var user = httpContextAccessor.HttpContext?.User;
 
@@ -38,8 +41,7 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Current
                 throw new InvalidOperationException("Failed to get current username from HTTP context.");
             }
 
-            username = name!;
-            return username!;
+            return Task.FromResult(name!);
         }
     }
 }
