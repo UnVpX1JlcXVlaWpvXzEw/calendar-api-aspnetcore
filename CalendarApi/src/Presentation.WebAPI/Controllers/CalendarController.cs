@@ -1,6 +1,7 @@
 ﻿using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Request;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Response;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateCalendar;
+using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetCalendar;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Exception.Common;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -12,6 +13,7 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
     public class CalendarController : ControllerBase
     {
         private readonly ICreateCalendar createCalendar;
+        private readonly IGetCalendars getCalendars;
 
         public CalendarController(IServiceProvider provider)
         {
@@ -24,7 +26,7 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> CreateCalendarAsync(
             [FromBody] CreateCalendarRequest request,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default)
         {
             if (request is null)
             {
@@ -36,6 +38,18 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
                 cancellationToken);
 
             return Created(string.Empty, response);
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(CalendarSummary), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> GetCalendarsAsync(CancellationToken cancellationToken = default)
+        {
+            var response = await getCalendars.GetAsync(cancellationToken);
+
+            return this.Ok(response);
         }
     }
 }
