@@ -1,4 +1,5 @@
 ﻿using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Request;
+using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Response;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateCalendar;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetCalendar;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Exception.Common;
@@ -17,6 +18,7 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
         public CalendarController(IServiceProvider provider)
         {
             createCalendar = provider.GetRequiredService<ICreateCalendar>();
+            getCalendars = provider.GetRequiredService<IGetCalendars>();
         }
 
         [HttpPost]
