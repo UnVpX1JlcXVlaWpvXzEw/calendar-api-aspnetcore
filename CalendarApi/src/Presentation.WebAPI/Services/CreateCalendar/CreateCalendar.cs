@@ -2,36 +2,40 @@
 {
     using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar;
     using HustleAddiction.Platform.CalendarApi.Infrastructure;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Request;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Response;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.CurrentUserInfoProvider;
 
     public class CreateCalendar : ICreateCalendar
     {
         private readonly CalendarAPIDbContext context;
+        private readonly ICurrentUserInfoProvider currentUserInfoProvider;
 
         public CreateCalendar(IServiceProvider provider)
         {
             context = provider.GetRequiredService<CalendarAPIDbContext>();
+            currentUserInfoProvider = provider
+                .GetRequiredService<ICurrentUserInfoProvider>();
         }
 
         public async Task<CreateCalendarResponse> CreateAsync(
-            string name,
-            Guid ownerId,
+            CreateCalendarRequest request,
             CancellationToken cancellationToken)
         {
+            var ownerId = await currentUserInfoProvider.GetUserId(cancellationToken);
+
             var calendar = new Calendar
             {
-                Name = name,
-                OwnerId = ownerId,
+                Name = request.Name,
+                OwnerId = ownerId
             };
 
-            await context.Set<Calendar>().AddAsync(calendar);
+            await context.Set<Calendar>().AddAsync(calendar, cancellationToken);
             await context.SaveEntitiesAsync(cancellationToken);
 
             return new CreateCalendarResponse
             {
-                Id = calendar.UUId,
-                Name = name,
-                OwnerId = calendar.OwnerId
+                Id = calendar.UUId
             };
         }
     }
