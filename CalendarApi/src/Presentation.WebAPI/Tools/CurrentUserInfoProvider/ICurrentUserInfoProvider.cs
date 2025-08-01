@@ -3,6 +3,7 @@
     public interface ICurrentUserInfoProvider
     {
         Task<Guid> GetUserId(CancellationToken cancellationToken = default);
+
         string GetUsername();
     }
 }
