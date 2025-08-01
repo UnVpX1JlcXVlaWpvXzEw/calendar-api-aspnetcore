@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar;
 
 namespace HustleAddiction.Platform.CalendarApi.Infrastructure.EntityConfiguration.Calendar
 {
