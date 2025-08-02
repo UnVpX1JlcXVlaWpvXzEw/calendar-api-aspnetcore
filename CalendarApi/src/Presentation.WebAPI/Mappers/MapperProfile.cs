@@ -9,8 +9,7 @@
         public MapperProfile()
         {
             this.CreateMap<Calendar, CalendarSummary>()
-                .ForMember(x => x.Id,
-                opt => opt.MapFrom(src => src.UUId));
+                .ForMember(x => x.Id, opt => opt.MapFrom(src => src.UUId));
         }
     }
 }

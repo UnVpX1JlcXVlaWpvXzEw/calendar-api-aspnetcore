@@ -13,6 +13,8 @@
 
         public CreateEvent(IServiceProvider serviceProvider)
         {
+            ArgumentNullException.ThrowIfNull(serviceProvider, nameof(serviceProvider));
+
             eventRepository = serviceProvider.GetRequiredService<IEventRepository>();
             calendarRepository = serviceProvider.GetRequiredService<ICalendarRepository>();
             currentUserInfoProvider = serviceProvider.GetRequiredService<ICurrentUserInfoProvider>();
@@ -23,13 +25,10 @@
             CreateEventRequest request,
             CancellationToken cancellationToken = default)
         {
-            var ownerId = await currentUserInfoProvider
-                .GetUserId(cancellationToken);
+            var ownerId = await currentUserInfoProvider.GetUserId(cancellationToken);
 
-            var calendar = await calendarRepository
-                .GetByUuIdAsync(calendarId, cancellationToken)
-                ?? throw new InvalidOperationException("Calendar not found.");
-
+            var calendar = await calendarRepository.GetByUuIdAsync(calendarId, cancellationToken)
+                ?? throw new InvalidOperationException("Calendar not found or access denied.");
 
             var newEvent = new Event
             {
@@ -40,13 +39,12 @@
                 Location = request.Location,
             };
 
-            var eventId = await eventRepository.AddWithCalendarAsync(
-                newEvent,
-                calendar.UUId,
-                cancellationToken);
+            calendar.AddEvent(newEvent);
 
-            return eventId;
+            await eventRepository.AddAsync(newEvent, cancellationToken);
+            await eventRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
 
+            return newEvent.UUId;
         }
     }
 }

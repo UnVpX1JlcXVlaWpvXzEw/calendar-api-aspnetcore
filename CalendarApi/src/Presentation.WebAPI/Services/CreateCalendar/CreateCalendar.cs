@@ -12,6 +12,8 @@
 
         public CreateCalendar(IServiceProvider serviceProvider)
         {
+            ArgumentNullException.ThrowIfNull(serviceProvider, nameof(serviceProvider));
+
             calendarRepository = serviceProvider.GetRequiredService<ICalendarRepository>();
             currentUserInfoProvider = serviceProvider.GetRequiredService<ICurrentUserInfoProvider>();
         }
