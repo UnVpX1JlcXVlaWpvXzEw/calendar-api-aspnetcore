@@ -23,6 +23,5 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Repository
                     e.EndTime <= end)
                 .ToListAsync(cancellationToken);
         }
-
     }
 }
