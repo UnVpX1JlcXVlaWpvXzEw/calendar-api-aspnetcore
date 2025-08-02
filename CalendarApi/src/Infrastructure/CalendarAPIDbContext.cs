@@ -48,7 +48,6 @@
             base.OnConfiguring(optionsBuilder);
         }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new CalendarEntityTypeConfiguration());
