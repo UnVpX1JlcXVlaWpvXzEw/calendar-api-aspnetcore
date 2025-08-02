@@ -4,6 +4,7 @@
     using HustleAddiction.Platform.CalendarApi.Infrastructure.EntityConfiguration.Calendar;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Logging;
     using System;
     using System.Linq;
     using System.Threading;
@@ -39,10 +40,14 @@
                 .UseLazyLoadingProxies()
                 .UseMySql(
                     this.configuration.GetSection(DatabaseConnectionSection).Value,
-                    new MySqlServerVersion(new Version(8, 0, 28)));
+                    new MySqlServerVersion(new Version(8, 0, 28)),
+                    b => b.MigrationsAssembly(typeof(CalendarAPIDbContext).Assembly.FullName))
+                .EnableSensitiveDataLogging()
+                .LogTo(Console.WriteLine, LogLevel.Information);
 
             base.OnConfiguring(optionsBuilder);
         }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

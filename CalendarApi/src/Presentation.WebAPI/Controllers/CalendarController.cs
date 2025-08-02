@@ -1,6 +1,7 @@
 ﻿using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Request;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Response;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateCalendar;
+using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateEvent;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetCalendar;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Exception.Common;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +15,15 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
     {
         private readonly ICreateCalendar createCalendar;
         private readonly IGetCalendars getCalendars;
+        private readonly ICreateEvent createEvent;
 
         public CalendarController(IServiceProvider provider)
         {
+            ArgumentNullException.ThrowIfNull(provider, nameof(provider));
+
             createCalendar = provider.GetRequiredService<ICreateCalendar>();
             getCalendars = provider.GetRequiredService<IGetCalendars>();
+            createEvent = provider.GetRequiredService<ICreateEvent>();
         }
 
         [HttpPost]
@@ -51,6 +56,28 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
             var response = await getCalendars.GetAsync(cancellationToken);
 
             return this.Ok(response);
+        }
+
+        [HttpPost("calendars{calendarId}/event")]
+        [ProducesResponseType(typeof(Guid), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> CreateEventAsync(
+            Guid calendarId,
+            [FromBody] CreateEventRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            if (request is null)
+            {
+                return BadRequest();
+            }
+
+            var eventId = await createEvent.CreateAsync(
+                calendarId,
+                request,
+                cancellationToken);
+
+            return Created(string.Empty, eventId);
         }
     }
 }

@@ -4,8 +4,13 @@
 
     public interface ICalendarRepository : IRepository<Calendar>
     {
-        Task<Calendar?> GetByOwnerIdAsync(
+        Task<List<Calendar>> GetByOwnerIdAsync(
             Guid ownerId,
             CancellationToken cancellationToken = default);
+
+        Task<Calendar?> GetByUuIdAsync(
+            Guid calendarUuId,
+            CancellationToken cancellationToken = default);
+
     }
 }

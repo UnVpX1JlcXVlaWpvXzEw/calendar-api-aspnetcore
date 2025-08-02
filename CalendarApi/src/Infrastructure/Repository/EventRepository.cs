@@ -23,5 +23,17 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Repository
                     e.EndTime <= end)
                 .ToListAsync(cancellationToken);
         }
+
+        public async Task<Guid> AddWithCalendarAsync(Event calendarEvent, Guid calendarUuId, CancellationToken cancellationToken = default)
+        {
+            context.Entry(calendarEvent)
+                   .Property("CalendarId")
+                   .CurrentValue = calendarUuId;
+
+            await context.AddAsync(calendarEvent, cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
+
+            return calendarEvent.UUId;
+        }
     }
 }

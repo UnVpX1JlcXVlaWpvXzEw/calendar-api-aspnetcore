@@ -10,5 +10,10 @@ namespace HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Reposit
             DateTime start,
             DateTime end,
             CancellationToken cancellationToken = default);
+
+        Task<Guid> AddWithCalendarAsync(
+            Event calendarEvent,
+            Guid calendarUuId,
+            CancellationToken cancellationToken = default);
     }
 }

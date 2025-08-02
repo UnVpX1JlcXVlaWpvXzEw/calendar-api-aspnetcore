@@ -6,6 +6,6 @@
     {
         Task<Guid> CreateAsync(
             CreateCalendarRequest request,
-            CancellationToken cancellationToken);
+            CancellationToken cancellationToken = default);
     }
 }

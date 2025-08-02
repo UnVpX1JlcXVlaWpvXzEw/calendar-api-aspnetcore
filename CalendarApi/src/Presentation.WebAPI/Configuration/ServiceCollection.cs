@@ -1,6 +1,7 @@
 ﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Configuration
 {
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateCalendar;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateEvent;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetCalendar;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.CurrentUserInfoProvider;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.DateTimeProvider;
@@ -24,7 +25,8 @@
                 .AddSingleton<IDateTimeProvider, DateTimeProvider>()
                 .AddScoped<ICurrentUserInfoProvider, CurrentUserInfoProvider>()
                 .AddScoped<ICreateCalendar, CreateCalendar>()
-                .AddScoped<IGetCalendars, GetCalendars>();
+                .AddScoped<IGetCalendars, GetCalendars>()
+                .AddScoped<ICreateEvent, CreateEvent>();
         }
     }
 }

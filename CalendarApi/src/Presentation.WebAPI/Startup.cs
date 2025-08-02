@@ -49,6 +49,9 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI
             services.AddCors(Configuration);
 
             services.AddControllers();
+
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddSwagger();
         }
 
