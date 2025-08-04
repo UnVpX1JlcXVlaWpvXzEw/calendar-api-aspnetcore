@@ -35,7 +35,6 @@
                 ?? throw new KeyNotFoundException("Event not found.");
 
             await eventRepository.Remove(eventToDelete, cancellationToken);
-
             await eventRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
         }
     }
