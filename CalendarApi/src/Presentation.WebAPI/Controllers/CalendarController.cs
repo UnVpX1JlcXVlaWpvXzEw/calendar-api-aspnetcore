@@ -90,7 +90,7 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> DeleteEventAsync(
+        public async Task<IActionResult> DeleteCalendarAsync(
             Guid calendarId,
             CancellationToken cancellationToken = default)
         {

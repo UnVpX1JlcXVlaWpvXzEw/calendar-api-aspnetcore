@@ -29,7 +29,6 @@
             }
 
             await calendarRepository.Remove(calendar, cancellationToken);
-
             await calendarRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
         }
     }
