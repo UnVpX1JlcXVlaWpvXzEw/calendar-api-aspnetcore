@@ -15,13 +15,13 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Repository
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<Calendar?> GetByUuIdAsync(
-            Guid calendarUuId,
+        public async Task<Calendar?> GetByIdAsync(
+            Guid calendarId,
             CancellationToken cancellationToken = default)
         {
             return await this.Entities
                 .FirstOrDefaultAsync(c =>
-                    c.UUId == calendarUuId,
+                    c.UUId == calendarId,
                     cancellationToken);
         }
     }

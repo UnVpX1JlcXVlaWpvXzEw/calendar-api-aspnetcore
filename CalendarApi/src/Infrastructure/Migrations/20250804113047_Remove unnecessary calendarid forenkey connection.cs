@@ -5,7 +5,7 @@
 namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class addnewmig : Migration
+    public partial class Removeunnecessarycalendaridforenkeyconnection : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

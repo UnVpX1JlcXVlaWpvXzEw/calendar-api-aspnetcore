@@ -19,10 +19,7 @@
 
         public void AddEvent(Event calendarEvent)
         {
-            if (calendarEvent is null)
-            {
-                throw new ArgumentNullException(nameof(calendarEvent), "The event cannot be null.");
-            }
+            ArgumentNullException.ThrowIfNull(calendarEvent, nameof(calendarEvent));
 
             this.events.Add(calendarEvent);
         }

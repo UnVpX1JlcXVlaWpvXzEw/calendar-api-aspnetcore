@@ -67,8 +67,8 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<Guid>("CalendarId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("CalendarId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime(6)");
@@ -112,9 +112,7 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
                     b.HasOne("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Calendar", null)
                         .WithMany("Events")
                         .HasForeignKey("CalendarId")
-                        .HasPrincipalKey("UUId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Calendar", b =>

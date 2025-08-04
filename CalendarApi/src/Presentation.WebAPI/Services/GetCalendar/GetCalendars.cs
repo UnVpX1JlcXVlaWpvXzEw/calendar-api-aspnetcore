@@ -17,7 +17,6 @@
 
             calendarRepository = provider.GetRequiredService<ICalendarRepository>();
             currentUserInfoProvider = provider.GetRequiredService<ICurrentUserInfoProvider>();
-
             mapper = provider.GetRequiredService<IMapper>();
         }
 

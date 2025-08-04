@@ -11,13 +11,13 @@
         private readonly IEventRepository eventRepository;
         private readonly ICurrentUserInfoProvider currentUserInfoProvider;
 
-        public CreateEvent(IServiceProvider serviceProvider)
+        public CreateEvent(IServiceProvider provider)
         {
-            ArgumentNullException.ThrowIfNull(serviceProvider, nameof(serviceProvider));
+            ArgumentNullException.ThrowIfNull(provider, nameof(provider));
 
-            eventRepository = serviceProvider.GetRequiredService<IEventRepository>();
-            calendarRepository = serviceProvider.GetRequiredService<ICalendarRepository>();
-            currentUserInfoProvider = serviceProvider.GetRequiredService<ICurrentUserInfoProvider>();
+            eventRepository = provider.GetRequiredService<IEventRepository>();
+            calendarRepository = provider.GetRequiredService<ICalendarRepository>();
+            currentUserInfoProvider = provider.GetRequiredService<ICurrentUserInfoProvider>();
         }
 
         public async Task<Guid> CreateAsync(
@@ -27,8 +27,8 @@
         {
             var ownerId = await currentUserInfoProvider.GetUserId(cancellationToken);
 
-            var calendar = await calendarRepository.GetByUuIdAsync(calendarId, cancellationToken)
-                ?? throw new InvalidOperationException("Calendar not found or access denied.");
+            var calendar = await calendarRepository.GetByIdAsync(calendarId, cancellationToken)
+                ?? throw new KeyNotFoundException("Calendar not found.");
 
             var newEvent = new Event
             {

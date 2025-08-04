@@ -1,8 +1,5 @@
 ﻿using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using CalendarEntity = HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Calendar;
-
 
 namespace HustleAddiction.Platform.CalendarApi.Infrastructure.EntityConfiguration.Calendar
 {
@@ -21,15 +18,6 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.EntityConfiguratio
 
             builder.Property(e => e.EndTime)
                 .IsRequired();
-
-            builder.Property<Guid>("CalendarId")
-                   .IsRequired();
-
-            builder.HasOne<CalendarEntity>()
-                   .WithMany(c => c.Events)
-                   .HasForeignKey("CalendarId")
-                   .HasPrincipalKey(c => c.UUId)
-                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

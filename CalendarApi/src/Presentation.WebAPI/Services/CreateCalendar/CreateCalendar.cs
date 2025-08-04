@@ -10,12 +10,12 @@
         private readonly ICalendarRepository calendarRepository;
         private readonly ICurrentUserInfoProvider currentUserInfoProvider;
 
-        public CreateCalendar(IServiceProvider serviceProvider)
+        public CreateCalendar(IServiceProvider provider)
         {
-            ArgumentNullException.ThrowIfNull(serviceProvider, nameof(serviceProvider));
+            ArgumentNullException.ThrowIfNull(provider, nameof(provider));
 
-            calendarRepository = serviceProvider.GetRequiredService<ICalendarRepository>();
-            currentUserInfoProvider = serviceProvider.GetRequiredService<ICurrentUserInfoProvider>();
+            calendarRepository = provider.GetRequiredService<ICalendarRepository>();
+            currentUserInfoProvider = provider.GetRequiredService<ICurrentUserInfoProvider>();
         }
 
         public async Task<Guid> CreateAsync(

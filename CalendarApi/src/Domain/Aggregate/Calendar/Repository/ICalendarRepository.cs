@@ -8,8 +8,8 @@
             Guid ownerId,
             CancellationToken cancellationToken = default);
 
-        Task<Calendar?> GetByUuIdAsync(
-            Guid calendarUuId,
+        Task<Calendar?> GetByIdAsync(
+            Guid calendarId,
             CancellationToken cancellationToken = default);
 
     }
