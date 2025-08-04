@@ -6,13 +6,22 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Repository
 {
     public class CalendarRepository(CalendarAPIDbContext context) : GenericRepository<Calendar>(context), ICalendarRepository
     {
-        public async Task<Calendar?> GetByOwnerIdAsync(
+        public async Task<List<Calendar>> GetByOwnerIdAsync(
             Guid ownerId,
             CancellationToken cancellationToken = default)
         {
             return await this.Entities
-                .FirstOrDefaultAsync(
-                    c => c.OwnerId == ownerId,
+                .Where(c => c.OwnerId == ownerId)
+                .ToListAsync(cancellationToken);
+        }
+
+        public async Task<Calendar?> GetByIdAsync(
+            Guid calendarId,
+            CancellationToken cancellationToken = default)
+        {
+            return await this.Entities
+                .FirstOrDefaultAsync(c =>
+                    c.UUId == calendarId,
                     cancellationToken);
         }
     }

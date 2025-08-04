@@ -16,5 +16,12 @@
         {
             yield return this.UUId;
         }
+
+        public void AddEvent(Event calendarEvent)
+        {
+            ArgumentNullException.ThrowIfNull(calendarEvent, nameof(calendarEvent));
+
+            this.events.Add(calendarEvent);
+        }
     }
 }

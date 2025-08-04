@@ -17,7 +17,7 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.EntityConfiguratio
                 .IsRequired();
 
             builder.Property(e => e.EndTime)
-                .IsRequired();        
+                .IsRequired();
         }
     }
 }

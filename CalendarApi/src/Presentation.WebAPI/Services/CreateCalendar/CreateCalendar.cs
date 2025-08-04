@@ -10,15 +10,17 @@
         private readonly ICalendarRepository calendarRepository;
         private readonly ICurrentUserInfoProvider currentUserInfoProvider;
 
-        public CreateCalendar(ICalendarRepository calendarRepository, ICurrentUserInfoProvider currentUserInfoProvider)
+        public CreateCalendar(IServiceProvider provider)
         {
-            this.calendarRepository = calendarRepository;
-            this.currentUserInfoProvider = currentUserInfoProvider;
+            ArgumentNullException.ThrowIfNull(provider, nameof(provider));
+
+            calendarRepository = provider.GetRequiredService<ICalendarRepository>();
+            currentUserInfoProvider = provider.GetRequiredService<ICurrentUserInfoProvider>();
         }
 
         public async Task<Guid> CreateAsync(
             CreateCalendarRequest request,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default)
         {
             var ownerId = await currentUserInfoProvider.GetUserId(cancellationToken);
 
