@@ -91,7 +91,6 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
             Guid calendarId,
             CancellationToken cancellationToken = default)
         {
-
             await deleteCalendar.DeleteAsync(calendarId, cancellationToken);
 
             return Ok();

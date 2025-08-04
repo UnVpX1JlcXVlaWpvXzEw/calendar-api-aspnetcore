@@ -18,10 +18,15 @@
             Guid calendarId,
             CancellationToken cancellationToken)
         {
-            var ownerId = currentUserInfoProvider.GetUserId(cancellationToken);
+            var ownerId = await currentUserInfoProvider.GetUserId(cancellationToken);
 
             var calendar = await calendarRepository.GetByIdAsync(calendarId, cancellationToken)
                 ?? throw new KeyNotFoundException("Calendar not found.");
+
+            if (calendar.OwnerId != ownerId)
+            {
+                throw new UnauthorizedAccessException("You are not authorized to delete this calendar.");
+            }
 
             await calendarRepository.Remove(calendar, cancellationToken);
 

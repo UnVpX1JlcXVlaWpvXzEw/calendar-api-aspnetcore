@@ -30,6 +30,11 @@
             var calendar = await calendarRepository.GetByIdAsync(calendarId, cancellationToken)
                 ?? throw new KeyNotFoundException("Calendar not found.");
 
+            if (calendar.OwnerId != ownerId)
+            {
+                throw new UnauthorizedAccessException("You are not authorized to add an event on this calendar.");
+            }
+
             var newEvent = new Event
             {
                 Title = request.Title,
