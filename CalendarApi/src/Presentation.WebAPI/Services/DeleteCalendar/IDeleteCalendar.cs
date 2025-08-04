@@ -2,6 +2,6 @@
 {
     public interface IDeleteCalendar
     {
-        Task<Guid> DeleteAsync(Guid guid, Guid ownerId, CancellationToken cancellationToken);
+        Task DeleteAsync(Guid calendarId, CancellationToken cancellationToken);
     }
 }
