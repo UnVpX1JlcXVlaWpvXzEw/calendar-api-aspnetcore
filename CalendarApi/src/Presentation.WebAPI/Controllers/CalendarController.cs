@@ -2,6 +2,7 @@
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Response;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateCalendar;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateEvent;
+using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteCalendar;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetCalendar;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Exception.Common;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,7 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
         private readonly ICreateCalendar createCalendar;
         private readonly IGetCalendars getCalendars;
         private readonly ICreateEvent createEvent;
+        private readonly IDeleteCalendar deleteCalendar;
 
         public CalendarController(IServiceProvider provider)
         {
@@ -24,6 +26,7 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
             createCalendar = provider.GetRequiredService<ICreateCalendar>();
             getCalendars = provider.GetRequiredService<IGetCalendars>();
             createEvent = provider.GetRequiredService<ICreateEvent>();
+            deleteCalendar = provider.GetRequiredService<IDeleteCalendar>();
         }
 
         [HttpPost]
@@ -79,5 +82,19 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
 
             return Created(string.Empty, eventId);
         }
+
+        [HttpDelete("/calendars/{calendarId}")]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> DeleteCalendarAsync(
+            Guid calendarId,
+            CancellationToken cancellationToken = default)
+        {
+            await deleteCalendar.DeleteAsync(calendarId, cancellationToken);
+
+            return Ok();
+        }
     }
 }
+
