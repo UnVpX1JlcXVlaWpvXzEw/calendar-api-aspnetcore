@@ -3,6 +3,7 @@ using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Response;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateCalendar;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateEvent;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteCalendar;
+using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteEvent;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetCalendar;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Exception.Common;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,7 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
         private readonly IGetCalendars getCalendars;
         private readonly ICreateEvent createEvent;
         private readonly IDeleteCalendar deleteCalendar;
+        private readonly IDeleteEvent deleteEvent;
 
         public CalendarController(IServiceProvider provider)
         {
@@ -27,6 +29,7 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
             getCalendars = provider.GetRequiredService<IGetCalendars>();
             createEvent = provider.GetRequiredService<ICreateEvent>();
             deleteCalendar = provider.GetRequiredService<IDeleteCalendar>();
+            deleteEvent = provider.GetRequiredService<IDeleteEvent>();
         }
 
         [HttpPost]
@@ -91,7 +94,21 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
             Guid calendarId,
             CancellationToken cancellationToken = default)
         {
-            await deleteCalendar.DeleteAsync(calendarId, cancellationToken);
+            await deleteCalendar.DeleteCalendarAsync(calendarId, cancellationToken);
+
+            return Ok();
+        }
+
+        [HttpDelete("/calendars/{calendarId}/event/{eventId}")]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> DeleteEventAsync(
+            Guid calendarId,
+            Guid eventId,
+            CancellationToken cancellationToken = default)
+        {
+            await deleteEvent.DeleteEventAsync(calendarId, eventId, cancellationToken);
 
             return Ok();
         }

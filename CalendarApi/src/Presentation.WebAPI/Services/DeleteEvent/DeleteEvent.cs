@@ -1,21 +1,24 @@
-﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteCalendar
+﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteEvent
 {
     using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Repository;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.CurrentUserInfoProvider;
 
-    public class DeleteCalendar : IDeleteCalendar
+    public class DeleteEvent : IDeleteEvent
     {
         private readonly ICalendarRepository calendarRepository;
+        private readonly IEventRepository eventRepository;
         private readonly ICurrentUserInfoProvider currentUserInfoProvider;
 
-        public DeleteCalendar(IServiceProvider provider)
+        public DeleteEvent(IServiceProvider provider)
         {
             calendarRepository = provider.GetRequiredService<ICalendarRepository>();
+            eventRepository = provider.GetRequiredService<IEventRepository>();
             currentUserInfoProvider = provider.GetRequiredService<ICurrentUserInfoProvider>();
         }
 
-        public async Task DeleteCalendarAsync(
+        public async Task DeleteEventAsync(
             Guid calendarId,
+            Guid eventId,
             CancellationToken cancellationToken)
         {
             var ownerId = await currentUserInfoProvider.GetUserId(cancellationToken);
@@ -28,9 +31,12 @@
                 throw new UnauthorizedAccessException("You are not authorized to delete this calendar.");
             }
 
-            await calendarRepository.Remove(calendar, cancellationToken);
+            var eventToDelete = calendar.Events.FirstOrDefault(x => x.UUId == eventId)
+                ?? throw new KeyNotFoundException("Event not found.");
 
-            await calendarRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
+            await eventRepository.Remove(eventToDelete, cancellationToken);
+
+            await eventRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
         }
     }
 }
