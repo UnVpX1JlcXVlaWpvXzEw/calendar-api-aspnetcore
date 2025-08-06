@@ -12,8 +12,6 @@
 
         public string? Location { get; set; }
 
-        public Guid CalendarId { get; set; }
-
         public List<Reminder> Reminders { get; set; } = [];
 
         protected override IEnumerable<object> GetAtomicValues()

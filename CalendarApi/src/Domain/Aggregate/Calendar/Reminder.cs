@@ -7,6 +7,7 @@
     public class Reminder : EntityBase
     {
         private int offsetInMinutes;
+
         public int OffsetInMinutes
         {
             get => offsetInMinutes;

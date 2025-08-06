@@ -5,7 +5,8 @@ using Microsoft.EntityFrameworkCore;
 namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Repository
 {
     public class EventRepository(CalendarAPIDbContext context)
-        : GenericRepository<Event>(context), IEventRepository
+        : GenericRepository<Event>(context),
+        IEventRepository
     {
         public async Task<IEnumerable<Event>> GetByOwnerIdAsync(CancellationToken cancellationToken = default)
         {
