@@ -5,6 +5,7 @@ using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateEv
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteCalendar;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteEvent;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetCalendar;
+using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.UpdateEvent;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Exception.Common;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -20,6 +21,7 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
         private readonly ICreateEvent createEvent;
         private readonly IDeleteCalendar deleteCalendar;
         private readonly IDeleteEvent deleteEvent;
+        private readonly IUpdateEvent updateEvent;
 
         public CalendarController(IServiceProvider provider)
         {
@@ -30,6 +32,7 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
             createEvent = provider.GetRequiredService<ICreateEvent>();
             deleteCalendar = provider.GetRequiredService<IDeleteCalendar>();
             deleteEvent = provider.GetRequiredService<IDeleteEvent>();
+            updateEvent = provider.GetRequiredService<IUpdateEvent>();
         }
 
         [HttpPost]
@@ -111,6 +114,29 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
             await deleteEvent.DeleteEventAsync(calendarId, eventId, cancellationToken);
 
             return Ok();
+        }
+
+        [HttpPut("/calendars/{calendarId}/events/{eventId}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> UpdateEventAsync(
+            Guid calendarId,
+            Guid eventId,
+            [FromBody] UpdateEventRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            if (request is null)
+                return BadRequest();
+
+            await updateEvent.UpdateEventAsync(
+                calendarId,
+                eventId,
+                request,
+                cancellationToken);
+
+            return NoContent();
         }
     }
 }
