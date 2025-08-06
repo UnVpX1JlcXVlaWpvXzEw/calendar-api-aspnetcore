@@ -8,15 +8,18 @@
 
         public string? Description { get; set; }
 
-        public DateTime StartTime { get; set; }
-
-        public DateTime EndTime { get; set; }
+        public DateRange DateRange { get; set; }
 
         public string? Location { get; set; }
+
+        public Guid CalendarId { get; set; }
+
+        public List<Reminder> Reminders { get; set; } = [];
 
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return this.UUId;
         }
+
     }
 }

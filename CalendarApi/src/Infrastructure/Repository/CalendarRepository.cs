@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Repository
 {
-    public class CalendarRepository(CalendarAPIDbContext context) : GenericRepository<Calendar>(context), ICalendarRepository
+    public class CalendarRepository(CalendarAPIDbContext context)
+        : GenericRepository<Calendar>(context), ICalendarRepository
     {
         public async Task<List<Calendar>> GetByOwnerIdAsync(
             Guid ownerId,

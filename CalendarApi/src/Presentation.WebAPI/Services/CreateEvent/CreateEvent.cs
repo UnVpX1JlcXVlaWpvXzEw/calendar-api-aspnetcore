@@ -39,9 +39,8 @@
             {
                 Title = request.Title,
                 Description = request.Description,
-                StartTime = request.StartDate,
-                EndTime = request.EndDate,
-                Location = request.Location,
+                DateRange = request.DateRange,
+                Location = request.Location
             };
 
             calendar.AddEvent(newEvent);

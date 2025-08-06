@@ -1,4 +1,5 @@
 ﻿using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace HustleAddiction.Platform.CalendarApi.Infrastructure.EntityConfiguration.Calendar
@@ -13,11 +14,21 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.EntityConfiguratio
                 .IsRequired()
                 .HasMaxLength(200);
 
-            builder.Property(e => e.StartTime)
-                .IsRequired();
+            builder.OwnsOne(e => e.DateRange, dr =>
+            {
+                dr.Property(p => p.Start)
+                    .HasColumnName("StartDate")
+                    .IsRequired();
 
-            builder.Property(e => e.EndTime)
-                .IsRequired();
+                dr.Property(p => p.End)
+                    .HasColumnName("EndDate")
+                    .IsRequired();
+            });
+
+            builder.HasMany(e => e.Reminders)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }

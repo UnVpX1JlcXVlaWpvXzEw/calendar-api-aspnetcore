@@ -11,6 +11,8 @@
             services.AddScoped<ICalendarRepository, CalendarRepository>();
 
             services.AddScoped<IEventRepository, EventRepository>();
+
+            services.AddScoped<IReminderRepository, ReminderRepository>();
         }
     }
 }
