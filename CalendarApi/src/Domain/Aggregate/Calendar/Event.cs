@@ -12,7 +12,7 @@
 
         public string? Location { get; set; }
 
-        public List<Reminder> Reminders { get; set; } = [];
+        public virtual List<Reminder> Reminders { get; set; } = [];
 
         protected override IEnumerable<object> GetAtomicValues()
         {

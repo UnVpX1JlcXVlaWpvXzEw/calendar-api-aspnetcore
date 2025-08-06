@@ -17,11 +17,11 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.EntityConfiguratio
             builder.OwnsOne(e => e.DateRange, dr =>
             {
                 dr.Property(p => p.Start)
-                    .HasColumnName("StartDate")
+                    .HasColumnName("StartTime")
                     .IsRequired();
 
                 dr.Property(p => p.End)
-                    .HasColumnName("EndDate")
+                    .HasColumnName("EndTime")
                     .IsRequired();
             });
 

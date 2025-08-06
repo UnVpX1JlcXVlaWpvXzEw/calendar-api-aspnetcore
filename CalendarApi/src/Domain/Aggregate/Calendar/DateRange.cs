@@ -6,29 +6,22 @@
 
     public class DateRange : ValueObject
     {
-        private DateTime start;
-        private DateTime end;
+        public DateTime Start { get; private set; }
 
-        public DateTime Start
+        public DateTime End { get; private set; }
+
+        public DateRange(DateTime start, DateTime end)
         {
-            get => start;
-            set
-            {
-                if (value >= End)
-                    throw new ArgumentException("Start date must be before end date.");
-                start = value;
-            }
+            ValidateDates(start, end);
+
+            this.Start = start;
+            this.End = end;
         }
 
-        public DateTime End
+        private static void ValidateDates(DateTime start, DateTime end)
         {
-            get => end;
-            set
-            {
-                if (value <= Start)
-                    throw new ArgumentException("End date must be after start date.");
-                end = value;
-            }
+            if (end <= start)
+                throw new ArgumentException("End date must be after start date.");
         }
 
         public TimeSpan Duration() => End - Start;
