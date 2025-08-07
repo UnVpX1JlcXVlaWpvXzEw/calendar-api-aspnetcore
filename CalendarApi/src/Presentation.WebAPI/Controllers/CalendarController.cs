@@ -136,7 +136,7 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
                 request,
                 cancellationToken);
 
-            return NoContent();
+            return Ok();
         }
     }
 }

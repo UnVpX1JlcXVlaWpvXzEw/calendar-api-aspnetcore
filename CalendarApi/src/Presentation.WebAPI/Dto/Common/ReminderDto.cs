@@ -6,5 +6,4 @@
         public int? Method { get; set; }
         public bool Enabled { get; set; }
     }
-
 }

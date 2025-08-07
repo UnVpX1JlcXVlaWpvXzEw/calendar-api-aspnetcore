@@ -33,9 +33,7 @@
                 ?? throw new KeyNotFoundException("Calendar not found.");
 
             if (calendar.OwnerId != ownerId)
-            {
                 throw new UnauthorizedAccessException("You are not authorized to delete this calendar.");
-            }
 
             var eventToUpdate = calendar.Events.FirstOrDefault(x => x.UUId == eventId)
                 ?? throw new KeyNotFoundException("Event not found");
@@ -47,18 +45,20 @@
                 request.StartTime.UtcDateTime,
                 request.EndTime.UtcDateTime);
 
-            eventToUpdate.Reminders.Clear();
+            var reminders = new List<Reminder>();
 
             foreach (var r in request.Reminders)
             {
-                eventToUpdate.Reminders.Add(new Reminder
+                var reminder = new Reminder
                 {
                     OffsetInMinutes = r.OffsetInMinutes,
                     Method = (ReminderMethod?)r.Method,
                     Enabled = r.Enabled
-                });
-            }
+                };
 
+                reminders.Add(reminder);
+            }
+            eventToUpdate.SetReminders(reminders);
 
             await eventRepository.Update(eventToUpdate, cancellationToken);
             await eventRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
