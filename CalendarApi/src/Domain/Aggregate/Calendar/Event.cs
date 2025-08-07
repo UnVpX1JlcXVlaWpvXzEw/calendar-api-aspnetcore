@@ -4,7 +4,7 @@
 
     public class Event : EntityBase
     {
-        private readonly List<Reminder> reminderList = [];
+        private readonly List<Reminder> reminders = [];
 
         public string Title { get; set; } = string.Empty;
 
@@ -14,26 +14,17 @@
 
         public string? Location { get; set; }
 
-        public IReadOnlyCollection<Reminder> Reminders => reminderList.AsReadOnly();
+        public virtual IReadOnlyCollection<Reminder> Reminders => reminders.AsReadOnly();
 
-        public void SetReminders(IEnumerable<Reminder> reminders)
+        public void AddReminder(Reminder newReminder)
         {
-            ArgumentNullException.ThrowIfNull(reminders);
-
-            reminderList.Clear();
-            reminderList.AddRange(reminders);
-        }
-
-        public void AddReminder(Reminder reminder)
-        {
-            ArgumentNullException.ThrowIfNull(reminder);
-            reminderList.Add(reminder);
+            ArgumentNullException.ThrowIfNull(newReminder);
+            reminders.Add(newReminder);
         }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return this.UUId;
         }
-
     }
 }

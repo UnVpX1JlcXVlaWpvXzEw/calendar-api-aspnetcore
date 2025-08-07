@@ -45,8 +45,6 @@
                 request.StartTime.UtcDateTime,
                 request.EndTime.UtcDateTime);
 
-            var reminders = new List<Reminder>();
-
             foreach (var r in request.Reminders)
             {
                 var reminder = new Reminder
@@ -56,13 +54,12 @@
                     Enabled = r.Enabled
                 };
 
-                reminders.Add(reminder);
+                eventToUpdate.AddReminder(reminder);
             }
-            eventToUpdate.SetReminders(reminders);
-
 
             await eventRepository.Update(eventToUpdate, cancellationToken);
             await eventRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
         }
+
     }
 }
