@@ -60,6 +60,7 @@
             }
             eventToUpdate.SetReminders(reminders);
 
+
             await eventRepository.Update(eventToUpdate, cancellationToken);
             await eventRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
         }
