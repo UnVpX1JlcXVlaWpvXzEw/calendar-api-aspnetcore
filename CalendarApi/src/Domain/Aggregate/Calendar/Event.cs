@@ -4,19 +4,22 @@
 
     public class Event : EntityBase
     {
+        private readonly List<Reminder> reminderList = [];
+
         public string Title { get; set; } = string.Empty;
 
         public string? Description { get; set; }
 
-        public DateTime StartTime { get; set; }
-
-        public DateTime EndTime { get; set; }
+        public DateRange DateRange { get; set; }
 
         public string? Location { get; set; }
+
+        public IReadOnlyCollection<Reminder> Reminders => reminderList.AsReadOnly();
 
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return this.UUId;
         }
+
     }
 }

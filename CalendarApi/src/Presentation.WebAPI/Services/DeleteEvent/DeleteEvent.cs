@@ -23,7 +23,7 @@
         {
             var ownerId = await currentUserInfoProvider.GetUserId(cancellationToken);
 
-            var calendar = await calendarRepository.GetByIdAsync(calendarId, cancellationToken)
+            var calendar = await calendarRepository.GetAsync(calendarId, cancellationToken)
                 ?? throw new KeyNotFoundException("Calendar not found.");
 
             if (calendar.OwnerId != ownerId)

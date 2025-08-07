@@ -6,6 +6,7 @@ using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Exception.M
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Jwt.Common;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Swagger;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI
 {
@@ -50,6 +51,8 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI
 
             services.AddControllers();
 
+            services.AddLogging();
+
             services.AddAutoMapper(typeof(Startup));
 
             services.AddSwagger();
@@ -62,6 +65,8 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI
             app.UseCors(Configuration);
 
             app.UseExceptionMiddleware();
+
+            app.UseSerilogRequestLogging();
 
             app.UseSwagger();
             app.UseSwaggerUI(options =>

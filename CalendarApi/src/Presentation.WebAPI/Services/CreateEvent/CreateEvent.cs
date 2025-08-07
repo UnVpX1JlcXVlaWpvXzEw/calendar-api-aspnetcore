@@ -27,7 +27,7 @@
         {
             var ownerId = await currentUserInfoProvider.GetUserId(cancellationToken);
 
-            var calendar = await calendarRepository.GetByIdAsync(calendarId, cancellationToken)
+            var calendar = await calendarRepository.GetAsync(calendarId, cancellationToken)
                 ?? throw new KeyNotFoundException("Calendar not found.");
 
             if (calendar.OwnerId != ownerId)
@@ -39,9 +39,8 @@
             {
                 Title = request.Title,
                 Description = request.Description,
-                StartTime = request.StartDate,
-                EndTime = request.EndDate,
-                Location = request.Location,
+                DateRange = request.DateRange,
+                Location = request.Location
             };
 
             calendar.AddEvent(newEvent);

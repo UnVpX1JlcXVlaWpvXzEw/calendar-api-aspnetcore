@@ -7,10 +7,5 @@
         Task<List<Calendar>> GetByOwnerIdAsync(
             Guid ownerId,
             CancellationToken cancellationToken = default);
-
-        Task<Calendar?> GetByIdAsync(
-            Guid calendarId,
-            CancellationToken cancellationToken = default);
-
     }
 }
