@@ -16,11 +16,17 @@
 
         public virtual IReadOnlyCollection<Reminder> Reminders => reminders.AsReadOnly();
 
-        public void AddReminder(Reminder newReminder)
+        public void AddReminder(Reminder reminder)
         {
-            ArgumentNullException.ThrowIfNull(newReminder);
+            ArgumentNullException.ThrowIfNull(reminder);
 
-            reminders.Add(newReminder);
+            reminders.Add(reminder);
+        }
+
+        public void RemoveReminder(Reminder reminder)
+        {
+            ArgumentNullException.ThrowIfNull(reminder);
+            reminders.Remove(reminder);
         }
 
         protected override IEnumerable<object> GetAtomicValues()
