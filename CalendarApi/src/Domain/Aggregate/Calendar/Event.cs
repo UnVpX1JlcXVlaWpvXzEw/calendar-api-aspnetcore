@@ -19,6 +19,7 @@
         public void AddReminder(Reminder newReminder)
         {
             ArgumentNullException.ThrowIfNull(newReminder);
+
             reminders.Add(newReminder);
         }
 
