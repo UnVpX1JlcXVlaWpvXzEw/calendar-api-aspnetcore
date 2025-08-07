@@ -6,16 +6,16 @@
     public class DeleteReminder : IDeleteReminder
     {
         private readonly ICalendarRepository calendarRepository;
-        private readonly IEventRepository eventRepository;
         private readonly IReminderRepository reminderRepository;
         private readonly ICurrentUserInfoProvider currentUserInfoProvider;
+
         public DeleteReminder(IServiceProvider provider)
         {
             calendarRepository = provider.GetRequiredService<ICalendarRepository>();
-            eventRepository = provider.GetRequiredService<IEventRepository>();
             reminderRepository = provider.GetRequiredService<IReminderRepository>();
             currentUserInfoProvider = provider.GetRequiredService<ICurrentUserInfoProvider>();
         }
+
         public async Task DeleteReminderAsync(
             Guid calendarId,
             Guid eventId,
@@ -39,7 +39,7 @@
             eventToUpdate.RemoveReminder(reminder);
 
             await reminderRepository.Remove(reminder, cancellationToken);
-            await eventRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
+            await reminderRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
         }
     }
 }

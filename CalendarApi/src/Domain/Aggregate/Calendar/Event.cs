@@ -26,6 +26,7 @@
         public void RemoveReminder(Reminder reminder)
         {
             ArgumentNullException.ThrowIfNull(reminder);
+
             reminders.Remove(reminder);
         }
 
