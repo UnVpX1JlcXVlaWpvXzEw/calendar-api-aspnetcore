@@ -4,7 +4,7 @@
 
     public class Event : EntityBase
     {
-        private readonly List<Reminder> reminders = [];
+        private List<Reminder> reminders = [];
 
         public string Title { get; set; } = string.Empty;
 
