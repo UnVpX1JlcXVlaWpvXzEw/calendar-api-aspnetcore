@@ -4,6 +4,7 @@
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateEvent;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteCalendar;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteEvent;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteReminder;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetCalendar;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.UpdateEvent;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.CurrentUserInfoProvider;
@@ -32,7 +33,8 @@
                 .AddScoped<ICreateEvent, CreateEvent>()
                 .AddScoped<IDeleteCalendar, DeleteCalendar>()
                 .AddScoped<IDeleteEvent, DeleteEvent>()
-                .AddScoped<IUpdateEvent, UpdateEvent>();
+                .AddScoped<IUpdateEvent, UpdateEvent>()
+                .AddScoped<IDeleteReminder, DeleteReminder>();
         }
     }
 }

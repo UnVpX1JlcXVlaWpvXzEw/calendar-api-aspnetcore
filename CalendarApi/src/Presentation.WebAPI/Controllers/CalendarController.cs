@@ -4,6 +4,7 @@ using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateCa
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateEvent;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteCalendar;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteEvent;
+using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteReminder;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetCalendar;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.UpdateEvent;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Exception.Common;
@@ -22,6 +23,7 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
         private readonly IDeleteCalendar deleteCalendar;
         private readonly IDeleteEvent deleteEvent;
         private readonly IUpdateEvent updateEvent;
+        private readonly IDeleteReminder deleteReminder;
 
         public CalendarController(IServiceProvider provider)
         {
@@ -33,6 +35,7 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
             deleteCalendar = provider.GetRequiredService<IDeleteCalendar>();
             deleteEvent = provider.GetRequiredService<IDeleteEvent>();
             updateEvent = provider.GetRequiredService<IUpdateEvent>();
+            deleteReminder = provider.GetRequiredService<IDeleteReminder>();
         }
 
         [HttpPost]
@@ -134,6 +137,25 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
                 calendarId,
                 eventId,
                 request,
+                cancellationToken);
+
+            return Ok();
+        }
+
+        [HttpDelete("/calendars/{calendarId}/events/{eventId}/reminders/{reminderId}")]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> DeleteReminderAsync(
+            Guid calendarId,
+            Guid eventId,
+            Guid reminderId,
+            CancellationToken cancellationToken = default)
+        {
+            await deleteReminder.DeleteReminderAsync(
+                calendarId,
+                eventId,
+                reminderId,
                 cancellationToken);
 
             return Ok();
