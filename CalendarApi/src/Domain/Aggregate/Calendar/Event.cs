@@ -4,6 +4,8 @@
 
     public class Event : EntityBase
     {
+        private readonly List<Reminder> reminderList = [];
+
         public string Title { get; set; } = string.Empty;
 
         public string? Description { get; set; }
@@ -12,7 +14,7 @@
 
         public string? Location { get; set; }
 
-        public virtual List<Reminder> Reminders { get; set; } = [];
+        public IReadOnlyCollection<Reminder> Reminders => reminderList.AsReadOnly();
 
         protected override IEnumerable<object> GetAtomicValues()
         {
