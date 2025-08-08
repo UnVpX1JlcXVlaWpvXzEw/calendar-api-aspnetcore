@@ -17,14 +17,7 @@
 
         public DateTime Start { get; set; }
 
-        public RecurrenceRule(int count)
-        {
-            Validate(count);
-
-            this.Count = count;
-        }
-
-        public void Validate(int count)
+        public void Validate()
         {
             if (Count.HasValue && Until.HasValue)
                 throw new ArgumentException("Cannot specify both count and until in a recurrence rule.");
