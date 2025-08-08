@@ -27,9 +27,7 @@
                 ?? throw new KeyNotFoundException("Calendar not found.");
 
             if (calendar.OwnerId != ownerId)
-            {
                 throw new UnauthorizedAccessException("You are not authorized to delete this calendar.");
-            }
 
             var eventToDelete = calendar.Events.FirstOrDefault(x => x.UUId == eventId)
                 ?? throw new KeyNotFoundException("Event not found.");

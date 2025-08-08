@@ -6,6 +6,7 @@ using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteCa
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteEvent;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteReminder;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetCalendar;
+using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetEvent;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.UpdateEvent;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Exception.Common;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,7 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
         private readonly IDeleteEvent deleteEvent;
         private readonly IUpdateEvent updateEvent;
         private readonly IDeleteReminder deleteReminder;
+        private readonly IGetEventOccurrences getEventOccurrences;
 
         public CalendarController(IServiceProvider provider)
         {
@@ -36,6 +38,7 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
             deleteEvent = provider.GetRequiredService<IDeleteEvent>();
             updateEvent = provider.GetRequiredService<IUpdateEvent>();
             deleteReminder = provider.GetRequiredService<IDeleteReminder>();
+            getEventOccurrences = provider.GetRequiredService<IGetEventOccurrences>();
         }
 
         [HttpPost]
@@ -159,6 +162,25 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
                 cancellationToken);
 
             return Ok();
+        }
+
+        [HttpGet("calendars/{calendarId}/occurrences")]
+        [ProducesResponseType(typeof(EventSummary), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> GetEventsAsync(Guid calendarId,
+            DateTime from,
+            DateTime after,
+            CancellationToken cancellationToken = default)
+        {
+            var response = await getEventOccurrences.GetEventSummariesAsync(
+                calendarId,
+                from,
+                after,
+                cancellationToken);
+
+            return this.Ok(response);
         }
     }
 }
