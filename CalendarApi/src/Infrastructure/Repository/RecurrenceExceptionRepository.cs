@@ -5,7 +5,7 @@
 
     internal class RecurrenceExceptionRepository(CalendarAPIDbContext context)
         : GenericRepository<RecurrenceException>(context),
-            IRecurrenceExceptionRepository
+        IRecurrenceExceptionRepository
     {
     }
 }

@@ -5,7 +5,7 @@
     using System;
     using System.Linq;
 
-    internal class RecurrenceRuleEntityTypeConfiguration : EntityTypeConfiguration<Domain.Aggregate.Calendar.RecurrenceRule>
+    internal class RecurrenceRuleEntityTypeConfiguration : EntityTypeConfiguration<RecurrenceRule>
     {
         protected override string TableName => "RecurrenceRules";
 

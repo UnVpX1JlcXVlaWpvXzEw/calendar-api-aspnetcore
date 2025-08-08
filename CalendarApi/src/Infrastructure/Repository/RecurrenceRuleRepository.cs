@@ -5,7 +5,7 @@
 
     internal class RecurrenceRuleRepository(CalendarAPIDbContext context)
         : GenericRepository<RecurrenceRule>(context),
-            IRecurrenceRuleRepository
+        IRecurrenceRuleRepository
     {
     }
 }
