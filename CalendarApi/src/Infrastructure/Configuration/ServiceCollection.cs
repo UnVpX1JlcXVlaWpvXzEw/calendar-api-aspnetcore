@@ -13,6 +13,10 @@
             services.AddScoped<IEventRepository, EventRepository>();
 
             services.AddScoped<IReminderRepository, ReminderRepository>();
+
+            services.AddScoped<IRecurrenceRuleRepository, RecurrenceRuleRepository>();
+
+            services.AddScoped<IRecurrenceExceptionRepository, RecurrenceExceptionRepository>();
         }
     }
 }

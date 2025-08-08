@@ -5,6 +5,8 @@
     public class Event : EntityBase
     {
         private List<Reminder> reminders = [];
+        private List<RecurrenceException> exceptions = [];
+        private List<RecurrenceRule> rules = [];
 
         public string Title { get; set; } = string.Empty;
 
@@ -15,6 +17,10 @@
         public string? Location { get; set; }
 
         public virtual IReadOnlyCollection<Reminder> Reminders => reminders.AsReadOnly();
+
+        public virtual IReadOnlyCollection<RecurrenceException> Exceptions => exceptions.AsReadOnly();
+
+        public virtual IReadOnlyCollection<RecurrenceRule> Rules => rules.AsReadOnly();
 
         public void AddReminder(Reminder reminder)
         {
