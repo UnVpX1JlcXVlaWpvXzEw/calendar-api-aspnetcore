@@ -1,13 +1,14 @@
 ﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetEvent
 {
-    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Response;
+    using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Services.EventOccurrenceService;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Request;
+    using Microsoft.AspNetCore.Mvc;
 
     public interface IGetEventOccurrences
     {
-        Task<List<EventSummary>> GetEventSummariesAsync(
+        Task<List<EventOccurrence>> GetEventSummariesAsync(
             Guid calendarId,
-            DateTime from,
-            DateTime after,
+            [FromQuery] GetEventOcurrencesRequest request,
             CancellationToken cancellationToken = default);
     }
 }

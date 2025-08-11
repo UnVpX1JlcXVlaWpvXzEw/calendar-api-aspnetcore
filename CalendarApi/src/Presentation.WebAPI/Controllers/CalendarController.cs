@@ -1,4 +1,5 @@
-﻿using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Request;
+﻿using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Services.EventOccurrenceService;
+using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Request;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Response;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateCalendar;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateEvent;
@@ -165,19 +166,23 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
         }
 
         [HttpGet("calendars/{calendarId}/occurrences")]
-        [ProducesResponseType(typeof(EventSummary), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(EventOccurrence), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> GetEventsAsync(Guid calendarId,
-            DateTime from,
-            DateTime after,
+        public async Task<IActionResult> GetEventsAsync(
+            Guid calendarId,
+            [FromQuery] GetEventOcurrencesRequest request,
             CancellationToken cancellationToken = default)
         {
+            if (request is null)
+            {
+                return BadRequest();
+            }
+
             var response = await getEventOccurrences.GetEventSummariesAsync(
                 calendarId,
-                from,
-                after,
+                request,
                 cancellationToken);
 
             return this.Ok(response);
