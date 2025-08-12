@@ -3,6 +3,7 @@
     public class GetEventOcurrencesRequest
     {
         public DateTime From { get; set; }
+
         public DateTime After { get; set; }
     }
 }
