@@ -26,7 +26,7 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
         private readonly IDeleteEvent deleteEvent;
         private readonly IUpdateEvent updateEvent;
         private readonly IDeleteReminder deleteReminder;
-        private readonly IGetEventOccurrences getEventOccurrences;
+        private readonly IGetEventByCalendar getEventOccurrences;
 
         public CalendarController(IServiceProvider provider)
         {
@@ -39,7 +39,7 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
             deleteEvent = provider.GetRequiredService<IDeleteEvent>();
             updateEvent = provider.GetRequiredService<IUpdateEvent>();
             deleteReminder = provider.GetRequiredService<IDeleteReminder>();
-            getEventOccurrences = provider.GetRequiredService<IGetEventOccurrences>();
+            getEventOccurrences = provider.GetRequiredService<IGetEventByCalendar>();
         }
 
         [HttpPost]
@@ -166,7 +166,7 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
         }
 
         [HttpGet("calendars/{calendarId}/occurrences")]
-        [ProducesResponseType(typeof(EventOccurrence), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(EventDetails), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.InternalServerError)]

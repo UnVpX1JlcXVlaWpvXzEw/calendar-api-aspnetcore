@@ -4,9 +4,9 @@
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Request;
     using Microsoft.AspNetCore.Mvc;
 
-    public interface IGetEventOccurrences
+    public interface IGetEventByCalendar
     {
-        Task<List<EventOccurrence>> GetEventSummariesAsync(
+        Task<List<EventDetails>> GetEventSummariesAsync(
             Guid calendarId,
             [FromQuery] GetEventOcurrencesRequest request,
             CancellationToken cancellationToken = default);

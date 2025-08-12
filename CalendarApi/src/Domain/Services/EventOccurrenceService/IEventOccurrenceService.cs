@@ -7,7 +7,7 @@ namespace HustleAddiction.Platform.CalendarApi.Domain.Services.EventOccurrenceSe
 
     public interface IEventOccurrenceService
     {
-        IEnumerable<EventOccurrence> Generate(
+        IEnumerable<EventDetails> Generate(
             Event calendarEvent,
             DateTime from,
             DateTime to);

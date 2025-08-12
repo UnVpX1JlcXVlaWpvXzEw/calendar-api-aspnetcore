@@ -6,32 +6,23 @@ namespace HustleAddiction.Platform.CalendarApi.Domain.Services.EventOccurrenceSe
 
     public class EventOccurrenceService : IEventOccurrenceService
     {
-        public IEnumerable<EventOccurrence> Generate(Event calendarEvent, DateTime from, DateTime to)
+        public IEnumerable<EventDetails> Generate(
+            Event calendarEvent,
+            DateTime from,
+            DateTime to)
         {
             ArgumentNullException.ThrowIfNull(calendarEvent);
 
+            var results = new List<EventDetails>();
+
             if (calendarEvent.DateRange is null)
-                yield break;
+                return results;
 
-            var interval = new DateRange(from, to);
+            var rules = calendarEvent.Rules
+                ?? Enumerable.Empty<RecurrenceRule>();
+            var exceptions = calendarEvent.Exceptions
+                ?? Enumerable.Empty<RecurrenceException>();
 
-            var rules = calendarEvent.Rules ?? Enumerable.Empty<RecurrenceRule>();
-            var exceptions = calendarEvent.Exceptions ?? Enumerable.Empty<RecurrenceException>();
-
-            if (!rules.Any())
-            {
-                if (calendarEvent.DateRange.Overlaps(interval))
-                {
-                    yield return new EventOccurrence
-                    {
-                        OriginalDate = calendarEvent.DateRange.Start,
-                        OverrideTime = null,
-                        OverrideTitle = null,
-                        OverrideLocation = null
-                    };
-                }
-                yield break;
-            }
 
             foreach (var rule in rules)
             {
@@ -44,29 +35,33 @@ namespace HustleAddiction.Platform.CalendarApi.Domain.Services.EventOccurrenceSe
 
                 while (i < max && (!rule.Until.HasValue || current <= rule.Until.Value))
                 {
-                    if (current > to) break;
+                    if (current > to)
+                        break;
 
                     if (current >= from && current <= to)
                     {
-                        var ex = exceptions.FirstOrDefault(x => x.OriginalDate.Date == current.Date);
+                        var ex = exceptions
+                            .FirstOrDefault(x => x.OriginalDate.Date == current.Date);
 
                         if (ex is null || ex.OverrideTime.HasValue)
                         {
-                            yield return new EventOccurrence
+                            results.Add(new EventDetails
                             {
-                                OriginalDate = current,
-                                OverrideTime = ex?.OverrideTime,
-                                OverrideTitle = ex?.OverrideTitle,
-                                OverrideLocation = ex?.OverrideLocation
-                            };
+                                Date = current,
+                                OverrideTime = ex?.OverrideTime ?? current,
+                                Title = ex?.OverrideTitle ?? calendarEvent.Title,
+                                Location = ex?.OverrideLocation ?? calendarEvent.Location
+                            });
                         }
 
-                        i++;
+                        break;
                     }
 
                     current = GetNextOccurrence(current, rule);
+                    i++;
                 }
             }
+            return results;
         }
 
         private static DateTime GetNextOccurrence(DateTime current, RecurrenceRule rule)
