@@ -1,4 +1,6 @@
-﻿namespace HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Services.EventOccurrenceService
+﻿using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar;
+
+namespace HustleAddiction.Platform.CalendarApi.Domain.Services.EventOccurrenceService
 {
     using System;
     using System.Collections.Generic;

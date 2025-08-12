@@ -1,6 +1,5 @@
 ﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Configuration
 {
-    using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Services.EventOccurrenceService;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateCalendar;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateEvent;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteCalendar;
@@ -37,8 +36,7 @@
                 .AddScoped<IDeleteEvent, DeleteEvent>()
                 .AddScoped<IUpdateEvent, UpdateEvent>()
                 .AddScoped<IDeleteReminder, DeleteReminder>()
-                .AddScoped<IGetEventOccurrences, GetEventOccurrences>()
-                .AddScoped<IEventOccurrenceService, EventOccurrenceService>();
+                .AddScoped<IGetEventOccurrences, GetEventOccurrences>();
         }
     }
 }

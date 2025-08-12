@@ -1,6 +1,6 @@
 ﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetEvent
 {
-    using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Services.EventOccurrenceService;
+    using HustleAddiction.Platform.CalendarApi.Domain.Services.EventOccurrenceService;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Request;
     using Microsoft.AspNetCore.Mvc;
 
