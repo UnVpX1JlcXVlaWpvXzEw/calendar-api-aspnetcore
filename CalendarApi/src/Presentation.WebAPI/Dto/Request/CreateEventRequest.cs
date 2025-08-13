@@ -11,5 +11,7 @@
         public DateRange DateRange { get; set; } = default!;
 
         public string Location { get; set; } = string.Empty;
+
+        public AddRecurrenceRule? RecurrenceRule { get; set; }
     }
 }

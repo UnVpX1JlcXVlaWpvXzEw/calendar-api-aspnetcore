@@ -29,6 +29,13 @@
             reminders.Add(reminder);
         }
 
+        public void AddRules(RecurrenceRule recurrenceRule)
+        {
+            ArgumentNullException.ThrowIfNull(recurrenceRule);
+
+            rules.Add(recurrenceRule);
+        }
+
         public void RemoveReminder(Reminder reminder)
         {
             ArgumentNullException.ThrowIfNull(reminder);

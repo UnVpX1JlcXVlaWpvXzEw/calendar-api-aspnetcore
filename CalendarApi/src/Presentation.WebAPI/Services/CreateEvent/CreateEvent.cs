@@ -21,9 +21,9 @@
         }
 
         public async Task<Guid> CreateAsync(
-            Guid calendarId,
-            CreateEventRequest request,
-            CancellationToken cancellationToken = default)
+    Guid calendarId,
+    CreateEventRequest request,
+    CancellationToken cancellationToken = default)
         {
             var ownerId = await currentUserInfoProvider.GetUserId(cancellationToken);
 
@@ -31,9 +31,10 @@
                 ?? throw new KeyNotFoundException("Calendar not found.");
 
             if (calendar.OwnerId != ownerId)
-            {
                 throw new UnauthorizedAccessException("You are not authorized to add an event on this calendar.");
-            }
+
+            if (request.DateRange is null)
+                throw new ArgumentException("DateRange is required.");
 
             var newEvent = new Event
             {
@@ -42,6 +43,23 @@
                 DateRange = request.DateRange,
                 Location = request.Location
             };
+
+            if (request.RecurrenceRule is not null)
+            {
+                var recurrenceRequest = request.RecurrenceRule;
+
+                var domainRule = new RecurrenceRule
+                {
+                    Frequency = recurrenceRequest.Frequency,
+                    Interval = recurrenceRequest.Interval,
+                    Start = recurrenceRequest.Start,
+                    Count = recurrenceRequest.Count,
+                    Until = recurrenceRequest.Until,
+                    ByDay = recurrenceRequest.ByDay ?? new List<string>()
+                };
+
+                newEvent.AddRules(domainRule);
+            }
 
             calendar.AddEvent(newEvent);
 
