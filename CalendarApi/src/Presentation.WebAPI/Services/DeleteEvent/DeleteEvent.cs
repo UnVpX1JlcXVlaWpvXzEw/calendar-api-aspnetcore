@@ -11,6 +11,8 @@
 
         public DeleteEvent(IServiceProvider provider)
         {
+            ArgumentNullException.ThrowIfNull(provider);
+
             calendarRepository = provider.GetRequiredService<ICalendarRepository>();
             eventRepository = provider.GetRequiredService<IEventRepository>();
             currentUserInfoProvider = provider.GetRequiredService<ICurrentUserInfoProvider>();

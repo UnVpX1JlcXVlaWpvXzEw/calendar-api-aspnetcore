@@ -1,84 +1,73 @@
-﻿using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar;
-
-namespace HustleAddiction.Platform.CalendarApi.Domain.Services.EventOccurrenceService
+﻿namespace HustleAddiction.Platform.CalendarApi.Domain.Services.EventOccurrenceService
 {
     using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Enums;
+    using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar;
 
     public class EventOccurrenceService : IEventOccurrenceService
     {
         public IEnumerable<EventDetails> Generate(
             Event calendarEvent,
-            DateTime from,
-            DateTime to)
+            DateRange filterPeriod)
         {
-            ArgumentNullException.ThrowIfNull(calendarEvent);
+            List<EventDetails> results = [];
 
-            var results = new List<EventDetails>();
+            var rule = calendarEvent.Rule!;
 
-            if (calendarEvent.DateRange is null)
+            if (!rule.IsValid())
+                throw new InvalidOperationException("RecurrenceRule is not valid.");
+
+            var startDate = rule.Start;
+            var untilDate = GetRuleUntilDate(rule);
+
+            if ((startDate < filterPeriod.Start && untilDate < filterPeriod.Start)
+                || (startDate > filterPeriod.End && untilDate > filterPeriod.End))
                 return results;
 
-            var rules = calendarEvent.Rules
-                ?? Enumerable.Empty<RecurrenceRule>();
-            var exceptions = calendarEvent.Exceptions
-                ?? Enumerable.Empty<RecurrenceException>();
-
-
-            foreach (var rule in rules)
+            do
             {
-                if (!rule.Count.HasValue && !rule.Until.HasValue)
-                    throw new InvalidOperationException("RecurrenceRule must define either Count or Until.");
-
-                var current = rule.Start;
-                var max = rule.Count ?? int.MaxValue;
-                var i = 0;
-
-                while (i < max && (!rule.Until.HasValue || current <= rule.Until.Value))
+                var newEvent = new EventDetails
                 {
-                    if (current > to)
-                        break;
+                    EventId = calendarEvent.UUId,
+                    RecurrenceRuleId = rule.UUId,
+                    Location = calendarEvent.Location,
+                    Title = calendarEvent.Title,
+                    Date = startDate
+                };
 
-                    if (current >= from && current <= to)
-                    {
-                        var ex = exceptions
-                            .FirstOrDefault(x => x.OriginalDate.Date == current.Date);
+                results.Add(newEvent);
 
-                        if (ex is null || ex.OverrideTime.HasValue)
-                        {
-                            results.Add(new EventDetails
-                            {
-                                Date = current,
-                                OverrideTime = ex?.OverrideTime ?? current,
-                                Title = ex?.OverrideTitle ?? calendarEvent.Title,
-                                Location = ex?.OverrideLocation ?? calendarEvent.Location
-                            });
-                        }
+                startDate = GetNextOccurrence(startDate, rule.Frequency);
 
-                        break;
-                    }
+            } while (startDate < filterPeriod.End);
 
-                    current = GetNextOccurrence(current, rule);
-                    i++;
-                }
-            }
             return results;
         }
 
-        private static DateTime GetNextOccurrence(DateTime current, RecurrenceRule rule)
+        private static DateTime GetRuleUntilDate(RecurrenceRule rule)
         {
-            switch (rule.Frequency)
+            if (rule.Until.HasValue)
+                return rule.Until.Value;
+
+            return rule.Frequency switch
             {
-                case Frequency.Daily:
-                    return current.AddDays(rule.Interval);
-                case Frequency.Weekly:
-                    return current.AddDays(7 * rule.Interval);
-                case Frequency.Monthly:
-                    return current.AddMonths(rule.Interval);
-                case Frequency.Yearly:
-                    return current.AddYears(rule.Interval);
-                default:
-                    throw new NotSupportedException($"Unsupported frequency: {rule.Frequency}");
-            }
+                Frequency.Daily => rule.Start.AddDays(rule.Count!.Value),
+                Frequency.Weekly => rule.Start.AddDays(7 * rule.Count!.Value),
+                Frequency.Monthly => rule.Start.AddMonths(rule.Count!.Value),
+                Frequency.Yearly => rule.Start.AddYears(rule.Count!.Value),
+                _ => throw new NotSupportedException($"Unsupported frequency: {rule.Frequency}"),
+            };
+        }
+
+        private static DateTime GetNextOccurrence(DateTime current, Frequency frequency)
+        {
+            return frequency switch
+            {
+                Frequency.Daily => current.AddDays(1),
+                Frequency.Weekly => current.AddDays(7),
+                Frequency.Monthly => current.AddMonths(1),
+                Frequency.Yearly => current.AddYears(1),
+                _ => throw new NotSupportedException($"Unsupported frequency: {frequency}"),
+            };
         }
     }
 }

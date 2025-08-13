@@ -1,8 +1,6 @@
-﻿namespace HustleAddiction.Platform.CalendarApi.Domain.Services.EventOccurrenceService
+﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Response
 {
-    using System;
-
-    public class EventDetails
+    public class EventSummary
     {
         public Guid EventId { get; set; }
 

@@ -13,7 +13,7 @@
 
         public CreateEvent(IServiceProvider provider)
         {
-            ArgumentNullException.ThrowIfNull(provider, nameof(provider));
+            ArgumentNullException.ThrowIfNull(provider);
 
             eventRepository = provider.GetRequiredService<IEventRepository>();
             calendarRepository = provider.GetRequiredService<ICalendarRepository>();

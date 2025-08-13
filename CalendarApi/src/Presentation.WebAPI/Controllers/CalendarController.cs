@@ -1,20 +1,21 @@
-﻿using HustleAddiction.Platform.CalendarApi.Domain.Services.EventOccurrenceService;
-using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Request;
-using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Response;
-using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateCalendar;
-using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateEvent;
-using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteCalendar;
-using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteEvent;
-using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteReminder;
-using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetCalendar;
-using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetEvent;
-using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.UpdateEvent;
-using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Exception.Common;
-using Microsoft.AspNetCore.Mvc;
-using System.Net;
-
-namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
+﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
 {
+    using HustleAddiction.Platform.CalendarApi.Domain.Services.EventOccurrenceService;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Request;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Response;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateCalendar;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateEvent;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteCalendar;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteEvent;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteReminder;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetCalendar;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetEvent;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.UpdateEvent;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Exception.Common;
+    using Microsoft.AspNetCore.Mvc;
+    using System.Net;
+
+
     [Route("api/v1/[controller]")]
     [ApiController]
     public class CalendarController : ControllerBase
@@ -30,7 +31,7 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
 
         public CalendarController(IServiceProvider provider)
         {
-            ArgumentNullException.ThrowIfNull(provider, nameof(provider));
+            ArgumentNullException.ThrowIfNull(provider);
 
             createCalendar = provider.GetRequiredService<ICreateCalendar>();
             getCalendars = provider.GetRequiredService<IGetCalendars>();
@@ -74,12 +75,12 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
             return this.Ok(response);
         }
 
-        [HttpPost("calendars{calendarId}/event")]
+        [HttpPost("calendars/{calendarId}/event")]
         [ProducesResponseType(typeof(Guid), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> CreateEventAsync(
-            Guid calendarId,
+            [FromRoute] Guid calendarId,
             [FromBody] CreateEventRequest request,
             CancellationToken cancellationToken = default)
         {
@@ -96,12 +97,12 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
             return Created(string.Empty, eventId);
         }
 
-        [HttpDelete("/calendars/{calendarId}")]
+        [HttpDelete("calendars/{calendarId}")]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> DeleteCalendarAsync(
-            Guid calendarId,
+            [FromRoute] Guid calendarId,
             CancellationToken cancellationToken = default)
         {
             await deleteCalendar.DeleteCalendarAsync(calendarId, cancellationToken);
@@ -109,13 +110,13 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpDelete("/calendars/{calendarId}/event/{eventId}")]
+        [HttpDelete("calendars/{calendarId}/event/{eventId}")]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> DeleteEventAsync(
-            Guid calendarId,
-            Guid eventId,
+            [FromRoute] Guid calendarId,
+            [FromRoute] Guid eventId,
             CancellationToken cancellationToken = default)
         {
             await deleteEvent.DeleteEventAsync(calendarId, eventId, cancellationToken);
@@ -123,14 +124,14 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpPut("/calendars/{calendarId}/events/{eventId}")]
+        [HttpPut("calendars/{calendarId}/events/{eventId}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> UpdateEventAsync(
-            Guid calendarId,
-            Guid eventId,
+            [FromRoute] Guid calendarId,
+            [FromRoute] Guid eventId,
             [FromBody] UpdateEventRequest request,
             CancellationToken cancellationToken = default)
         {
@@ -146,14 +147,14 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpDelete("/calendars/{calendarId}/events/{eventId}/reminders/{reminderId}")]
+        [HttpDelete("calendars/{calendarId}/events/{eventId}/reminders/{reminderId}")]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> DeleteReminderAsync(
-            Guid calendarId,
-            Guid eventId,
-            Guid reminderId,
+            [FromRoute] Guid calendarId,
+            [FromRoute] Guid eventId,
+            [FromRoute] Guid reminderId,
             CancellationToken cancellationToken = default)
         {
             await deleteReminder.DeleteReminderAsync(
@@ -165,13 +166,13 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpGet("calendars/{calendarId}/occurrences")]
+        [HttpGet("calendars/{calendarId}/events")]
         [ProducesResponseType(typeof(EventDetails), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> GetEventsAsync(
-            Guid calendarId,
+            [FromRoute] Guid calendarId,
             [FromQuery] GetEventOcurrencesRequest request,
             CancellationToken cancellationToken = default)
         {

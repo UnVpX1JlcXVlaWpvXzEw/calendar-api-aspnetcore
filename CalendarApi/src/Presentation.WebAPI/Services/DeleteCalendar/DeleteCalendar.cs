@@ -10,6 +10,8 @@
 
         public DeleteCalendar(IServiceProvider provider)
         {
+            ArgumentNullException.ThrowIfNull(provider);
+
             calendarRepository = provider.GetRequiredService<ICalendarRepository>();
             currentUserInfoProvider = provider.GetRequiredService<ICurrentUserInfoProvider>();
         }

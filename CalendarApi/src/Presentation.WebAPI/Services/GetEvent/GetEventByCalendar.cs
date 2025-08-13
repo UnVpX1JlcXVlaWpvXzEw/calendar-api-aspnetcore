@@ -1,63 +1,68 @@
 ﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetEvent
 {
+    using AutoMapper;
     using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar;
     using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Repository;
     using HustleAddiction.Platform.CalendarApi.Domain.Services.EventOccurrenceService;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Request;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Response;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.CurrentUserInfoProvider;
-    using Microsoft.AspNetCore.Mvc;
 
     public class GetEventByCalendar : IGetEventByCalendar
     {
         private readonly ICalendarRepository calendarRepository;
         private readonly ICurrentUserInfoProvider currentUserInfoProvider;
         private readonly IEventOccurrenceService eventOccurrenceService;
+        private readonly IMapper mapper;
 
         public GetEventByCalendar(IServiceProvider provider)
         {
-            ArgumentNullException.ThrowIfNull(provider, nameof(provider));
+            ArgumentNullException.ThrowIfNull(provider);
 
             calendarRepository = provider.GetRequiredService<ICalendarRepository>();
             eventOccurrenceService = provider.GetRequiredService<IEventOccurrenceService>();
             currentUserInfoProvider = provider.GetRequiredService<ICurrentUserInfoProvider>();
+            mapper = provider.GetRequiredService<IMapper>();
         }
 
-        public async Task<List<EventDetails>> GetEventSummariesAsync( //Trocar para lista Event
+        public async Task<List<EventSummary>> GetEventSummariesAsync(
             Guid calendarId,
-            [FromQuery] GetEventOcurrencesRequest request,
+            GetEventOcurrencesRequest request,
             CancellationToken cancellationToken = default)
         {
             var ownerId = await currentUserInfoProvider.GetUserId(cancellationToken);
 
-            var calendar = await calendarRepository.GetAsync(calendarId, cancellationToken);
+            var calendar = await calendarRepository.GetAsync(calendarId, cancellationToken)
+                ?? throw new KeyNotFoundException($"Calendar {calendarId} not found.");
 
             if (calendar.OwnerId != ownerId)
                 throw new UnauthorizedAccessException("You are not authorized to access this calendar.");
 
             var interval = new DateRange(request.From, request.After);
-            var result = new List<EventDetails>();
+            List<EventDetails> result = [];
 
-            foreach (var e in calendar.Events)
+            foreach (var calendarEvent in calendar.Events)
             {
-                var rules = e.Rules ?? Enumerable.Empty<RecurrenceRule>();
-                if (!rules.Any())
+                if (calendarEvent.Rule is not null)
                 {
-                    if (e.DateRange is not null && e.DateRange.Overlaps(interval))
-                    {
-                        result.Add(new EventDetails
-                        {
-                            Date = e.DateRange.Start,
-                            Title = e.Title,
-                            Location = e.Location
-                        });
-                    }
+                    result.AddRange(eventOccurrenceService.Generate(calendarEvent, interval));
 
                     continue;
                 }
 
-                result.AddRange(eventOccurrenceService.Generate(e, request.From, request.After));
+                if (calendarEvent.DateRange.Overlaps(interval))
+                {
+                    result.Add(new EventDetails
+                    {
+                        EventId = calendarEvent.UUId,
+                        Date = calendarEvent.DateRange.Start,
+                        Title = calendarEvent.Title,
+                        Location = calendarEvent.Location
+                    });
+                }
             }
-            return result;
+
+            return mapper.Map<List<EventSummary>>(result);
         }
     }
 }
