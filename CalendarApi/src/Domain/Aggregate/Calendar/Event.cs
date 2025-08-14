@@ -5,22 +5,19 @@
     public class Event : EntityBase
     {
         private List<Reminder> reminders = [];
-        private List<RecurrenceException> exceptions = [];
         private List<RecurrenceRule> rules = [];
 
         public string Title { get; set; } = string.Empty;
 
         public string? Description { get; set; }
 
-        public DateRange DateRange { get; set; }
+        public required DateRange DateRange { get; set; }
 
         public string? Location { get; set; }
 
-        public virtual IReadOnlyCollection<Reminder> Reminders => reminders.AsReadOnly();
+        public virtual IReadOnlyCollection<Reminder>? Reminders => reminders.AsReadOnly();
 
-        public virtual IReadOnlyCollection<RecurrenceException> Exceptions => exceptions.AsReadOnly();
-
-        public virtual IReadOnlyCollection<RecurrenceRule> Rules => rules.AsReadOnly();
+        public virtual RecurrenceRule? Rule { get; set; }
 
         public void AddReminder(Reminder reminder)
         {

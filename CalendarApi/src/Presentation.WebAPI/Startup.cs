@@ -1,4 +1,5 @@
-﻿using HustleAddiction.Platform.CalendarApi.Infrastructure;
+﻿using HustleAddiction.Platform.CalendarApi.Domain.Configuration;
+using HustleAddiction.Platform.CalendarApi.Infrastructure;
 using HustleAddiction.Platform.CalendarApi.Infrastructure.Configuration;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Configuration;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Cors.Configuration;
@@ -46,6 +47,7 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI
 
             services.RegisterPresentationServices(Configuration);
             services.RegisterInfraredServices();
+            services.RegisterDomainServices();
 
             services.AddCors(Configuration);
 

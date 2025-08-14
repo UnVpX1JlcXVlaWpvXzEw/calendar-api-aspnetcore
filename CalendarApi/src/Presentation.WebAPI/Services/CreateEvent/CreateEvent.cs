@@ -9,21 +9,23 @@
     {
         private readonly ICalendarRepository calendarRepository;
         private readonly IEventRepository eventRepository;
+        private readonly IRecurrenceRuleRepository recurrenceRuleRepository;
         private readonly ICurrentUserInfoProvider currentUserInfoProvider;
 
         public CreateEvent(IServiceProvider provider)
         {
-            ArgumentNullException.ThrowIfNull(provider, nameof(provider));
+            ArgumentNullException.ThrowIfNull(provider);
 
             eventRepository = provider.GetRequiredService<IEventRepository>();
             calendarRepository = provider.GetRequiredService<ICalendarRepository>();
             currentUserInfoProvider = provider.GetRequiredService<ICurrentUserInfoProvider>();
+            recurrenceRuleRepository = provider.GetRequiredService<IRecurrenceRuleRepository>();
         }
 
         public async Task<Guid> CreateAsync(
-    Guid calendarId,
-    CreateEventRequest request,
-    CancellationToken cancellationToken = default)
+            Guid calendarId,
+            CreateEventRequest request,
+            CancellationToken cancellationToken = default)
         {
             var ownerId = await currentUserInfoProvider.GetUserId(cancellationToken);
 
@@ -51,13 +53,12 @@
                 var domainRule = new RecurrenceRule
                 {
                     Frequency = recurrenceRequest.Frequency,
-                    Interval = recurrenceRequest.Interval,
                     Start = recurrenceRequest.Start,
                     Count = recurrenceRequest.Count,
                     Until = recurrenceRequest.Until,
-                    ByDay = recurrenceRequest.ByDay ?? new List<string>()
                 };
-
+                await recurrenceRuleRepository.AddAsync(domainRule, cancellationToken);
+                //newEvent.Rule = domainRule;
                 newEvent.AddRules(domainRule);
             }
 

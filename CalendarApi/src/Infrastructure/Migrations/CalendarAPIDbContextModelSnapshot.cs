@@ -83,6 +83,9 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("datetime(6)");
 
+                    b.Property<long?>("RuleId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -95,49 +98,12 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
 
                     b.HasIndex("CalendarId");
 
+                    b.HasIndex("RuleId");
+
                     b.HasIndex("UUId")
                         .IsUnique();
 
                     b.ToTable("Events", (string)null);
-                });
-
-            modelBuilder.Entity("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.RecurrenceException", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<long?>("EventId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("ModificationDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("OriginalDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("OverrideLocation")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime?>("OverrideTime")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("OverrideTitle")
-                        .HasColumnType("longtext");
-
-                    b.Property<Guid>("UUId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EventId");
-
-                    b.ToTable("RecurrenceException");
                 });
 
             modelBuilder.Entity("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.RecurrenceRule", b =>
@@ -148,26 +114,18 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("ByDay")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<int?>("Count")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long?>("EventId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("Frequency")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Interval")
-                        .HasColumnType("int");
+                    b.Property<string>("Frequency")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("ModificationDate")
+                        .IsConcurrencyToken()
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("Start")
@@ -181,9 +139,10 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EventId");
+                    b.HasIndex("UUId")
+                        .IsUnique();
 
-                    b.ToTable("RecurrenceRule");
+                    b.ToTable("RecurrenceRules", (string)null);
                 });
 
             modelBuilder.Entity("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Reminder", b =>
@@ -203,10 +162,12 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
                     b.Property<long?>("EventId")
                         .HasColumnType("bigint");
 
-                    b.Property<int?>("Method")
-                        .HasColumnType("int");
+                    b.Property<string>("Method")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<DateTime>("ModificationDate")
+                        .IsConcurrencyToken()
                         .HasColumnType("datetime(6)");
 
                     b.Property<int>("OffsetInMinutes")
@@ -219,7 +180,10 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("Reminder");
+                    b.HasIndex("UUId")
+                        .IsUnique();
+
+                    b.ToTable("Reminders", (string)null);
                 });
 
             modelBuilder.Entity("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Event", b =>
@@ -228,6 +192,10 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
                         .WithMany("Events")
                         .HasForeignKey("CalendarId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.RecurrenceRule", "Rule")
+                        .WithMany()
+                        .HasForeignKey("RuleId");
 
                     b.OwnsOne("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.DateRange", "DateRange", b1 =>
                         {
@@ -252,22 +220,8 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
 
                     b.Navigation("DateRange")
                         .IsRequired();
-                });
 
-            modelBuilder.Entity("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.RecurrenceException", b =>
-                {
-                    b.HasOne("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Event", null)
-                        .WithMany("Exceptions")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.RecurrenceRule", b =>
-                {
-                    b.HasOne("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Event", null)
-                        .WithMany("Rules")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.Navigation("Rule");
                 });
 
             modelBuilder.Entity("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Reminder", b =>
@@ -285,11 +239,7 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
 
             modelBuilder.Entity("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Event", b =>
                 {
-                    b.Navigation("Exceptions");
-
                     b.Navigation("Reminders");
-
-                    b.Navigation("Rules");
                 });
 #pragma warning restore 612, 618
         }

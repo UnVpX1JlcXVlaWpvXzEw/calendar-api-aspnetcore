@@ -29,13 +29,7 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.EntityConfiguratio
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasMany(e => e.Rules)
-                .WithOne()
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasMany(e => e.Exceptions)
-                .WithOne()
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(e => e.Rule);
         }
     }
 }
