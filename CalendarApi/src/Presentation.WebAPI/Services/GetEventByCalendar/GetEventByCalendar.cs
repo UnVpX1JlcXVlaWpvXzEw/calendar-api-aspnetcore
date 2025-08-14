@@ -1,4 +1,4 @@
-﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetEvent
+﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetEventByCalendar
 {
     using AutoMapper;
     using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar;

@@ -1,4 +1,4 @@
-﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetEvent
+﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetEventByCalendar
 {
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Request;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Response;
