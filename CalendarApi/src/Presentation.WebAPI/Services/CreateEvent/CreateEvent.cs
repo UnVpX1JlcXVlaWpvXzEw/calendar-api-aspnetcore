@@ -58,7 +58,6 @@
                     Until = recurrenceRequest.Until,
                 };
                 await recurrenceRuleRepository.AddAsync(domainRule, cancellationToken);
-                //newEvent.Rule = domainRule;
                 newEvent.AddRules(domainRule);
             }
 
