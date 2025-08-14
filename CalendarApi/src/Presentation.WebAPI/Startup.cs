@@ -51,13 +51,7 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI
 
             services.AddCors(Configuration);
 
-            services.AddControllers()
-                .AddJsonOptions(options =>
-                {
-                    options.JsonSerializerOptions.DefaultIgnoreCondition =
-                        System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
-                });
-
+            services.AddControllers();
 
             services.AddLogging();
 

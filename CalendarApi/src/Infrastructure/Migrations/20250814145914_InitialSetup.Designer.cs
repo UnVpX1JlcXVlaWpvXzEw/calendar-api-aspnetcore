@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
 {
     [DbContext(typeof(CalendarAPIDbContext))]
-    [Migration("20250813220258_InitialSetup")]
+    [Migration("20250814145914_InitialSetup")]
     partial class InitialSetup
     {
         /// <inheritdoc />
