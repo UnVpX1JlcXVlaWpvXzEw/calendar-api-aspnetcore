@@ -48,6 +48,8 @@
         {
             modelBuilder.ApplyConfiguration(new CalendarEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new EventEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new RecurrenceRuleEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new ReminderEntityTypeConfiguration());
 
             var properties = modelBuilder.Model.GetEntityTypes()
                 .SelectMany(t => t.GetProperties())

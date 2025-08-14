@@ -29,7 +29,7 @@
 
             var isTransient = (other as EntityBase)?.IsTransient();
 
-            return (isTransient is null || !isTransient.Value) 
+            return (isTransient is null || !isTransient.Value)
                 && base.Equals(other);
         }
 

@@ -11,6 +11,8 @@
 
         public DeleteReminder(IServiceProvider provider)
         {
+            ArgumentNullException.ThrowIfNull(provider);
+
             calendarRepository = provider.GetRequiredService<ICalendarRepository>();
             reminderRepository = provider.GetRequiredService<IReminderRepository>();
             currentUserInfoProvider = provider.GetRequiredService<ICurrentUserInfoProvider>();
