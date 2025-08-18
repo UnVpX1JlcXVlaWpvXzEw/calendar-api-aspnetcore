@@ -52,9 +52,7 @@
             CancellationToken cancellationToken = default)
         {
             if (request is null)
-            {
                 return BadRequest();
-            }
 
             var id = await createCalendar.CreateAsync(
                 request,
@@ -85,9 +83,7 @@
             CancellationToken cancellationToken = default)
         {
             if (request is null)
-            {
                 return BadRequest();
-            }
 
             var eventId = await createEvent.CreateAsync(
                 calendarId,
@@ -190,4 +186,3 @@
         }
     }
 }
-

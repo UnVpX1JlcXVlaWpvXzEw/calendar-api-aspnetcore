@@ -60,6 +60,5 @@
             await eventRepository.Update(eventToUpdate, cancellationToken);
             await eventRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
         }
-
     }
 }

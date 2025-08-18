@@ -5,6 +5,7 @@
     public class Event : EntityBase
     {
         private List<Reminder> reminders = [];
+        private List<RecurrenceRule> rules = [];
 
         public string Title { get; set; } = string.Empty;
 
@@ -23,6 +24,13 @@
             ArgumentNullException.ThrowIfNull(reminder);
 
             reminders.Add(reminder);
+        }
+
+        public void AddRules(RecurrenceRule recurrenceRule)
+        {
+            ArgumentNullException.ThrowIfNull(recurrenceRule);
+
+            rules.Add(recurrenceRule);
         }
 
         public void RemoveReminder(Reminder reminder)
