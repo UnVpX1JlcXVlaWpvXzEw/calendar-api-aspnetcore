@@ -5,8 +5,11 @@
     public class AddRecurrenceRule
     {
         public Frequency Frequency { get; set; }
+
         public DateTime Start { get; set; }
+
         public int? Count { get; set; }
+
         public DateTime? Until { get; set; }
     }
 }

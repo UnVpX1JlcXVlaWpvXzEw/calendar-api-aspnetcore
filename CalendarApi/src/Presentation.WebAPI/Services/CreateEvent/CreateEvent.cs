@@ -64,6 +64,7 @@
             calendar.AddEvent(newEvent);
 
             await eventRepository.AddAsync(newEvent, cancellationToken);
+
             await eventRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
 
             return newEvent.UUId;
