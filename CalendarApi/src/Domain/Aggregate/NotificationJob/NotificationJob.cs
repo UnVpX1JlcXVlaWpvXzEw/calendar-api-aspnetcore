@@ -1,6 +1,5 @@
 ﻿namespace HustleAddiction.Platform.CalendarApi.Domain.Aggregate.NotificationJob
 {
-    using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar;
     using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Enums;
     using HustleAddiction.Platform.CalendarApi.Domain.SeedWork;
     using System;
@@ -22,16 +21,16 @@
 
         public Channel Channel { get; set; }
 
+        public DateTime StartTime { get; set; }
+
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return this.UUId;
         }
 
-        public static DateTime CalculateScheduledTime(Event selectedEvent, Reminder reminder)
+        public void CalculateScheduledTime()
         {
-            var start = selectedEvent.DateRange.Start;
-
-            return start.AddMinutes(reminder.OffsetInMinutes);
+            ScheduledTime = StartTime.AddMinutes(ReminderOffset);
         }
     }
 }
