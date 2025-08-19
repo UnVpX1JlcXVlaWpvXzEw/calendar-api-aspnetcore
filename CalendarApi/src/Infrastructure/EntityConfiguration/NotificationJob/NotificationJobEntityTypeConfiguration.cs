@@ -2,7 +2,7 @@
 {
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    internal class NotificationJobEntityTipeConfiguration : EntityTypeConfiguration<Domain.Aggregate.NotificationJob.NotificationJob>
+    internal class NotificationJobEntityTypeConfiguration : EntityTypeConfiguration<Domain.Aggregate.NotificationJob.NotificationJob>
     {
         protected override string TableName => "NotificationJob";
 

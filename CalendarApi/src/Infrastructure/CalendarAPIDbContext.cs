@@ -51,7 +51,7 @@
             modelBuilder.ApplyConfiguration(new EventEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new RecurrenceRuleEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ReminderEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new NotificationJobEntityTipeConfiguration());
+            modelBuilder.ApplyConfiguration(new NotificationJobEntityTypeConfiguration());
 
             var properties = modelBuilder.Model.GetEntityTypes()
                 .SelectMany(t => t.GetProperties())
