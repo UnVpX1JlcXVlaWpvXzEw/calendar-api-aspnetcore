@@ -2,6 +2,7 @@
 {
     using Domain.SeedWork;
     using HustleAddiction.Platform.CalendarApi.Infrastructure.EntityConfiguration.Calendar;
+    using HustleAddiction.Platform.CalendarApi.Infrastructure.EntityConfiguration.NotificationJob;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using System;
@@ -50,6 +51,7 @@
             modelBuilder.ApplyConfiguration(new EventEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new RecurrenceRuleEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ReminderEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new NotificationJobEntityTypeConfiguration());
 
             var properties = modelBuilder.Model.GetEntityTypes()
                 .SelectMany(t => t.GetProperties())

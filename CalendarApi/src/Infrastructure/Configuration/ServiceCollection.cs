@@ -1,6 +1,7 @@
 ﻿namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Configuration
 {
     using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Repository;
+    using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.NotificationJob.Repository;
     using HustleAddiction.Platform.CalendarApi.Infrastructure.Repository;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -15,6 +16,8 @@
             services.AddScoped<IReminderRepository, ReminderRepository>();
 
             services.AddScoped<IRecurrenceRuleRepository, RecurrenceRuleRepository>();
+
+            services.AddScoped<INotificationJobRepository, NotificationJobRepository>();
         }
     }
 }
