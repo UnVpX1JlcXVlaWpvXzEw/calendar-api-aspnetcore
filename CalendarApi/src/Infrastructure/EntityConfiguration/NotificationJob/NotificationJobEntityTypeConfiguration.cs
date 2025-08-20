@@ -8,7 +8,6 @@
 
         protected override void ConfigureEntity(EntityTypeBuilder<Domain.Aggregate.NotificationJob.NotificationJob> builder)
         {
-
         }
     }
 }
