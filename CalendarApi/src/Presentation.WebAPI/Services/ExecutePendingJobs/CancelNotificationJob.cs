@@ -1,0 +1,45 @@
+﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.ExecutePendingJobs
+{
+    using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Repository;
+    using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.NotificationJob.Repository;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.CurrentUserInfoProvider;
+
+    public class CancelNotificationJob : ICancelNotificationJob
+    {
+        private readonly ICalendarRepository calendarRepository;
+        private readonly INotificationJobRepository notificationJobRepository;
+        private readonly ICurrentUserInfoProvider currentUserInfoProvider;
+
+        public CancelNotificationJob(IServiceProvider provider)
+        {
+            ArgumentNullException.ThrowIfNull(provider);
+
+            notificationJobRepository = provider.GetRequiredService<INotificationJobRepository>();
+            calendarRepository = provider.GetRequiredService<ICalendarRepository>();
+            currentUserInfoProvider = provider.GetRequiredService<ICurrentUserInfoProvider>();
+        }
+
+        public async Task CancelNotificationJobAsync(
+            Guid calendarId,
+            Guid notificationJobId,
+            CancellationToken cancellationToken)
+        {
+            var ownerId = await currentUserInfoProvider.GetUserId(cancellationToken);
+
+            var calendar = await calendarRepository.GetAsync(calendarId, cancellationToken)
+                ?? throw new KeyNotFoundException("Calendar not found.");
+
+            if (calendar.OwnerId != ownerId)
+                throw new UnauthorizedAccessException("You are not authorized to delete this calendar.");
+
+            var job = await notificationJobRepository.GetAsync(notificationJobId, cancellationToken)
+                ?? throw new KeyNotFoundException("Notification job not found.");
+
+            if (job.CalendarId != calendar.UUId)
+                throw new KeyNotFoundException("Notification job does not belong to the specified calendar.");
+
+            await notificationJobRepository.Remove(job, cancellationToken);
+            await notificationJobRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
+        }
+    }
+}

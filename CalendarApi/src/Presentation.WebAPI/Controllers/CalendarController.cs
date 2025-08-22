@@ -8,6 +8,7 @@
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteCalendar;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteEvent;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteReminder;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.ExecutePendingJobs;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetCalendar;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetEventByCalendar;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.UpdateEvent;
@@ -28,6 +29,7 @@
         private readonly IUpdateEvent updateEvent;
         private readonly IDeleteReminder deleteReminder;
         private readonly IGetEventByCalendar getEventOccurrences;
+        private readonly ICancelNotificationJob cancelNotificationJob;
 
         public CalendarController(IServiceProvider provider)
         {
@@ -41,6 +43,7 @@
             updateEvent = provider.GetRequiredService<IUpdateEvent>();
             deleteReminder = provider.GetRequiredService<IDeleteReminder>();
             getEventOccurrences = provider.GetRequiredService<IGetEventByCalendar>();
+            cancelNotificationJob = provider.GetRequiredService<ICancelNotificationJob>();
         }
 
         [HttpPost]
@@ -183,6 +186,23 @@
                 cancellationToken);
 
             return this.Ok(response);
+        }
+
+        [HttpDelete("calendars/{calendarId}/notificationJobs{notificationJobId}")]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> DeleteCalendarAsync(
+            [FromRoute] Guid calendarId,
+            [FromRoute] Guid notificationJobId,
+            CancellationToken cancellationToken = default)
+        {
+            await cancelNotificationJob.CancelNotificationJobAsync(
+                calendarId,
+                notificationJobId,
+                cancellationToken);
+
+            return Ok();
         }
     }
 }
