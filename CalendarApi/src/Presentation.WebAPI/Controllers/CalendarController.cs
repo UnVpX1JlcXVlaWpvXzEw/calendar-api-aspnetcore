@@ -188,7 +188,7 @@
             return this.Ok(response);
         }
 
-        [HttpPost("NotificationJobs")]
+        [HttpPost("notificationJobs")]
         [ProducesResponseType(typeof(Guid), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.InternalServerError)]
