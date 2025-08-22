@@ -188,7 +188,7 @@
             return this.Ok(response);
         }
 
-        [HttpPut("notificationJob")]
+        [HttpPut("calendars/{calendarId}/notificationJob{notificationJobId}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.Unauthorized)]

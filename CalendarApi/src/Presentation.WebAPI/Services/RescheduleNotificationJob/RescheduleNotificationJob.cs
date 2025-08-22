@@ -58,6 +58,7 @@
                 job.Status = request.Status.Value;
 
             await notificationJobRepository.Update(job, cancellationToken);
+            await notificationJobRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
         }
     }
 }
