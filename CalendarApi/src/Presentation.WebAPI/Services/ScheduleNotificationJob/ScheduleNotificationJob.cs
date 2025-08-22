@@ -41,9 +41,6 @@
             var selectedEvent = await eventRepository.GetAsync(eventId, cancellationToken)
                 ?? throw new KeyNotFoundException("Event not found.");
 
-            //if (selectedEvent. != calendar.OwnerId)
-            //    throw new KeyNotFoundException("Event does not belong to the specified calendar.");
-
             var eventStart = selectedEvent.DateRange?.Start
                 ?? throw new InvalidOperationException("Event has no start time.");
 
