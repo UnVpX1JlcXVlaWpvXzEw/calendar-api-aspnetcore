@@ -8,7 +8,6 @@
     public class RescheduleNotificationJob : IRescheduleNotificationJob
     {
         private readonly ICalendarRepository calendarRepository;
-        private readonly IEventRepository eventRepository;
         private readonly INotificationJobRepository notificationJobRepository;
         private readonly ICurrentUserInfoProvider currentUserInfoProvider;
 
@@ -18,7 +17,6 @@
 
             notificationJobRepository = provider.GetRequiredService<INotificationJobRepository>();
             calendarRepository = provider.GetRequiredService<ICalendarRepository>();
-            eventRepository = provider.GetRequiredService<IEventRepository>();
             currentUserInfoProvider = provider.GetRequiredService<ICurrentUserInfoProvider>();
         }
 
@@ -41,7 +39,6 @@
 
             if (job.CalendarId != calendar.UUId)
                 throw new KeyNotFoundException("Notification job does not belong to the specified calendar.");
-
 
             if (request.ReminderOffset.HasValue)
             {
