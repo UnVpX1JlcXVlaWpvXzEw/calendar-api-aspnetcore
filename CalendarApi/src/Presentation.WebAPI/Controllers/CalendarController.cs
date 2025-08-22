@@ -10,6 +10,7 @@
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteReminder;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetCalendar;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetEventByCalendar;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.RescheduleNotificationJob;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.UpdateEvent;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Exception.Common;
     using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,7 @@
         private readonly IUpdateEvent updateEvent;
         private readonly IDeleteReminder deleteReminder;
         private readonly IGetEventByCalendar getEventOccurrences;
+        private readonly IRescheduleNotificationJob rescheduleNotificationJob;
 
         public CalendarController(IServiceProvider provider)
         {
@@ -41,6 +43,7 @@
             updateEvent = provider.GetRequiredService<IUpdateEvent>();
             deleteReminder = provider.GetRequiredService<IDeleteReminder>();
             getEventOccurrences = provider.GetRequiredService<IGetEventByCalendar>();
+            rescheduleNotificationJob = provider.GetRequiredService<IRescheduleNotificationJob>();
         }
 
         [HttpPost]
@@ -183,6 +186,32 @@
                 cancellationToken);
 
             return this.Ok(response);
+        }
+
+        [HttpPut("notificationJob")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.InternalServerError)]
+
+        public async Task<IActionResult> RescheduleNotificationJob(
+            [FromRoute] Guid calendarId,
+            [FromRoute] Guid notificationJobId,
+            [FromBody] UpdateNotificationJobRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            if (request is null)
+            {
+                return BadRequest();
+            }
+
+            await rescheduleNotificationJob.UpdateNotificationJob(
+                calendarId,
+                notificationJobId,
+                request,
+                cancellationToken);
+
+            return Ok();
         }
     }
 }
