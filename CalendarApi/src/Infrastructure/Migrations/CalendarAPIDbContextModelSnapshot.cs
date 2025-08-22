@@ -186,58 +186,6 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
                     b.ToTable("Reminders", (string)null);
                 });
 
-            modelBuilder.Entity("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.NotificationJob.NotificationJob", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<Guid>("CalendarId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("Channel")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<Guid>("EventId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<DateTime>("ModificationDate")
-                        .IsConcurrencyToken()
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("ReminderOffset")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ScheduledTime")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<Guid>("TargetUserId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("UUId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UUId")
-                        .IsUnique();
-
-                    b.ToTable("NotificationJob", (string)null);
-                });
-
             modelBuilder.Entity("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Event", b =>
                 {
                     b.HasOne("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Calendar", null)
@@ -249,7 +197,7 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("RuleId");
 
-                    b.OwnsOne("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.DateRange", "DateRange", b1 =>
+                    b.OwnsOne("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Event.DateRange#HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.DateRange", "DateRange", b1 =>
                         {
                             b1.Property<long>("EventId")
                                 .HasColumnType("bigint");
@@ -264,7 +212,7 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
 
                             b1.HasKey("EventId");
 
-                            b1.ToTable("Events");
+                            b1.ToTable("Events", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("EventId");
