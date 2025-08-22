@@ -10,6 +10,7 @@
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteReminder;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetCalendar;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetEventByCalendar;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.ScheduleNotificationJob;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.UpdateEvent;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Exception.Common;
     using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,7 @@
         private readonly IUpdateEvent updateEvent;
         private readonly IDeleteReminder deleteReminder;
         private readonly IGetEventByCalendar getEventOccurrences;
+        private readonly IScheduleNotificationJob scheduleNotificationJob;
 
         public CalendarController(IServiceProvider provider)
         {
@@ -41,6 +43,7 @@
             updateEvent = provider.GetRequiredService<IUpdateEvent>();
             deleteReminder = provider.GetRequiredService<IDeleteReminder>();
             getEventOccurrences = provider.GetRequiredService<IGetEventByCalendar>();
+            scheduleNotificationJob = provider.GetRequiredService<IScheduleNotificationJob>();
         }
 
         [HttpPost]
@@ -183,6 +186,28 @@
                 cancellationToken);
 
             return this.Ok(response);
+        }
+
+        [HttpPost("NotificationJobs")]
+        [ProducesResponseType(typeof(Guid), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> CreateAsync(
+            Guid calendarId,
+            Guid eventId,
+            [FromBody] CreateNotificationJobRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            if (request is null)
+                return BadRequest();
+
+            var id = await scheduleNotificationJob.CreateAsync(
+                calendarId,
+                eventId,
+                request,
+                cancellationToken);
+
+            return Created(string.Empty, id);
         }
     }
 }

@@ -4,5 +4,6 @@
 
     public interface INotificationJobRepository : IRepository<NotificationJob>
     {
+        Task<IEnumerable<NotificationJob>> GetByOwnerIdAsync(CancellationToken cancellationToken = default);
     }
 }

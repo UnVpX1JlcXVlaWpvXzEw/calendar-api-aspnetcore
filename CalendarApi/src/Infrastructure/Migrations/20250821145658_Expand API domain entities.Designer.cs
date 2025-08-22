@@ -4,6 +4,7 @@ using HustleAddiction.Platform.CalendarApi.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
 {
     [DbContext(typeof(CalendarAPIDbContext))]
-    partial class CalendarAPIDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250821145658_Expand API domain entities")]
+    partial class ExpandAPIdomainentities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
