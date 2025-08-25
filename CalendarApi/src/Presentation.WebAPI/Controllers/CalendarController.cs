@@ -187,27 +187,5 @@
 
             return this.Ok(response);
         }
-
-        [HttpPost("notificationJobs")]
-        [ProducesResponseType(typeof(Guid), (int)HttpStatusCode.Created)]
-        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> CreateAsync(
-            Guid calendarId,
-            Guid eventId,
-            [FromBody] CreateNotificationJobRequest request,
-            CancellationToken cancellationToken = default)
-        {
-            if (request is null)
-                return BadRequest();
-
-            var id = await scheduleNotificationJob.CreateAsync(
-                calendarId,
-                eventId,
-                request,
-                cancellationToken);
-
-            return Created(string.Empty, id);
-        }
     }
 }

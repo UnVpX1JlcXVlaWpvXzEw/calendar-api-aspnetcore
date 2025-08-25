@@ -4,7 +4,7 @@
 
     public interface IScheduleNotificationJob
     {
-        Task<Guid> CreateAsync(
+        Task CreateAsync(
             Guid calendarId,
             Guid eventId,
             CreateNotificationJobRequest request,

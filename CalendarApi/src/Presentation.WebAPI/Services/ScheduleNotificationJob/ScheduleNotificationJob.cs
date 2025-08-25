@@ -24,7 +24,7 @@
             currentUserInfoProvider = provider.GetRequiredService<ICurrentUserInfoProvider>();
         }
 
-        public async Task<Guid> CreateAsync(
+        public async Task CreateAsync(
             Guid calendarId,
             Guid eventId,
             CreateNotificationJobRequest request,
@@ -61,8 +61,6 @@
             await notificationJobRepository.AddAsync(job, cancellationToken);
 
             await notificationJobRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
-
-            return job.UUId;
         }
     }
 }
