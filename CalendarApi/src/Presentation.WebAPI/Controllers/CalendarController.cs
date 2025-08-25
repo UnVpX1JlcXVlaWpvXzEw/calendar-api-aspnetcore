@@ -10,7 +10,6 @@
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteReminder;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetCalendar;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetEventByCalendar;
-    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.RescheduleNotificationJob;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.UpdateEvent;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Exception.Common;
     using Microsoft.AspNetCore.Mvc;
@@ -29,7 +28,6 @@
         private readonly IUpdateEvent updateEvent;
         private readonly IDeleteReminder deleteReminder;
         private readonly IGetEventByCalendar getEventOccurrences;
-        private readonly IRescheduleNotificationJob rescheduleNotificationJob;
 
         public CalendarController(IServiceProvider provider)
         {
@@ -43,7 +41,6 @@
             updateEvent = provider.GetRequiredService<IUpdateEvent>();
             deleteReminder = provider.GetRequiredService<IDeleteReminder>();
             getEventOccurrences = provider.GetRequiredService<IGetEventByCalendar>();
-            rescheduleNotificationJob = provider.GetRequiredService<IRescheduleNotificationJob>();
         }
 
         [HttpPost]
