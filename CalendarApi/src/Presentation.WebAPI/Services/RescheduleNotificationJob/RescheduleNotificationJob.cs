@@ -23,20 +23,18 @@
         }
 
         public async Task UpdateNotificationJob(
-            Guid calendarId,
-            Guid notificationJobId,
             UpdateNotificationJobRequest request,
             CancellationToken cancellationToken)
         {
             var ownerId = await currentUserInfoProvider.GetUserId(cancellationToken);
 
-            var calendar = await calendarRepository.GetAsync(calendarId, cancellationToken)
+            var calendar = await calendarRepository.GetAsync(request.calendarId, cancellationToken)
                 ?? throw new KeyNotFoundException("Calendar not found.");
 
             if (calendar.OwnerId != ownerId)
                 throw new UnauthorizedAccessException("You are not authorized to delete this calendar.");
 
-            var job = await notificationJobRepository.GetAsync(notificationJobId, cancellationToken)
+            var job = await notificationJobRepository.GetAsync(request.notificationJobId, cancellationToken)
                 ?? throw new KeyNotFoundException("Notification job not found.");
 
             if (job.CalendarId != calendar.UUId)

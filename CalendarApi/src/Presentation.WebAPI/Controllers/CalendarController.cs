@@ -187,31 +187,5 @@
 
             return this.Ok(response);
         }
-
-        [HttpPut("calendars/{calendarId}/notificationJob{notificationJobId}")]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.Unauthorized)]
-        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.InternalServerError)]
-
-        public async Task<IActionResult> RescheduleNotificationJob(
-            [FromRoute] Guid calendarId,
-            [FromRoute] Guid notificationJobId,
-            [FromBody] UpdateNotificationJobRequest request,
-            CancellationToken cancellationToken = default)
-        {
-            if (request is null)
-            {
-                return BadRequest();
-            }
-
-            await rescheduleNotificationJob.UpdateNotificationJob(
-                calendarId,
-                notificationJobId,
-                request,
-                cancellationToken);
-
-            return Ok();
-        }
     }
 }

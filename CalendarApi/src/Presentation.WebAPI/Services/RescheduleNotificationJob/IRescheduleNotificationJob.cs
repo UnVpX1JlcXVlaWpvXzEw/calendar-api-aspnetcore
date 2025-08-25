@@ -5,8 +5,6 @@
     public interface IRescheduleNotificationJob
     {
         Task UpdateNotificationJob(
-            Guid calendarId,
-            Guid notificationJobId,
             UpdateNotificationJobRequest request,
             CancellationToken cancellationToken);
     }
