@@ -36,7 +36,7 @@
                 .AddScoped<IDeleteEvent, DeleteEvent>()
                 .AddScoped<IUpdateEvent, UpdateEvent>()
                 .AddScoped<IDeleteReminder, DeleteReminder>()
-                .AddScoped<IGetEventByCalendar, GetEventByCalendar>()
+                .AddScoped<IGetEventByCalendar, GetEventByCalendar>();
         }
     }
 }
