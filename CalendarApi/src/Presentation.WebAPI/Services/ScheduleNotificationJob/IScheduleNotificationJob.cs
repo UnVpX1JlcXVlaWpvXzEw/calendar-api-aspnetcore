@@ -5,8 +5,6 @@
     public interface IScheduleNotificationJob
     {
         Task CreateAsync(
-            Guid calendarId,
-            Guid eventId,
             CreateNotificationJobRequest request,
             CancellationToken cancellationToken);
     }

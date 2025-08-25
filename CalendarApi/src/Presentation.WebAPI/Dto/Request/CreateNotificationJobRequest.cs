@@ -4,6 +4,10 @@
 
     public class CreateNotificationJobRequest
     {
+        public Guid calendarId { get; set; }
+
+        public Guid eventId { get; set; }
+
         public int ReminderOffset { get; set; }
 
         public Channel Channel { get; set; }
