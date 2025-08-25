@@ -1,10 +1,11 @@
 ﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.ExecutePendingJobs
 {
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Request;
+
     public interface ICancelNotificationJob
     {
         Task CancelNotificationJobAsync(
-            Guid calendarId,
-            Guid notificationJobId,
+            CalendarJobIdentifiersDto request,
             CancellationToken cancellationToken);
     }
 }

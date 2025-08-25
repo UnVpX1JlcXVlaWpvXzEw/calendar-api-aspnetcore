@@ -187,22 +187,5 @@
 
             return this.Ok(response);
         }
-
-        [HttpDelete("calendars/{calendarId}/notificationJobs{notificationJobId}")]
-        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.NotFound)]
-        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> DeleteCalendarAsync(
-            [FromRoute] Guid calendarId,
-            [FromRoute] Guid notificationJobId,
-            CancellationToken cancellationToken = default)
-        {
-            await cancelNotificationJob.CancelNotificationJobAsync(
-                calendarId,
-                notificationJobId,
-                cancellationToken);
-
-            return Ok();
-        }
     }
 }
