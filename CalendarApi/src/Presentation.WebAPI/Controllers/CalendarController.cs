@@ -8,7 +8,6 @@
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteCalendar;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteEvent;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteReminder;
-    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.ExecutePendingJobs;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetCalendar;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetEventByCalendar;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.UpdateEvent;
@@ -29,7 +28,6 @@
         private readonly IUpdateEvent updateEvent;
         private readonly IDeleteReminder deleteReminder;
         private readonly IGetEventByCalendar getEventOccurrences;
-        private readonly IExecutePendingJobs executePendingJobs;
 
         public CalendarController(IServiceProvider provider)
         {
@@ -43,7 +41,6 @@
             updateEvent = provider.GetRequiredService<IUpdateEvent>();
             deleteReminder = provider.GetRequiredService<IDeleteReminder>();
             getEventOccurrences = provider.GetRequiredService<IGetEventByCalendar>();
-            executePendingJobs = provider.GetRequiredService<IExecutePendingJobs>();
         }
 
         [HttpPost]
@@ -186,25 +183,6 @@
                 cancellationToken);
 
             return this.Ok(response);
-        }
-
-
-        [HttpPut("calendars/{calendarId}/notificationJobs/{notificationJobId}/execute")]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.Unauthorized)]
-        [ProducesResponseType(typeof(ErrorMessage), (int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> ExecuteJobAsync(
-            [FromRoute] Guid calendarId,
-            [FromRoute] Guid notificationJobId,
-            CancellationToken cancellationToken = default)
-        {
-            await executePendingJobs.ExecutePendingJobsAsync(
-                calendarId,
-                notificationJobId,
-                cancellationToken);
-
-            return Ok();
         }
     }
 }
