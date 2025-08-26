@@ -23,9 +23,6 @@
             builder.Property(x => x.ScheduledTime)
                 .IsRequired();
 
-            builder.Property(x => x.StartTime)
-                .IsRequired();
-
             builder.Property(x => x.Status)
                 .IsRequired()
                 .HasConversion<string>();

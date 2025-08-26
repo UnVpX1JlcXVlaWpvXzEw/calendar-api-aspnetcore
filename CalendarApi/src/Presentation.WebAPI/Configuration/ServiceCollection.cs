@@ -7,6 +7,7 @@
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteReminder;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetCalendar;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetEventByCalendar;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.ScheduleNotificationJob;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.RescheduleNotificationJob;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.UpdateEvent;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.CurrentUserInfoProvider;
@@ -38,7 +39,7 @@
                 .AddScoped<IUpdateEvent, UpdateEvent>()
                 .AddScoped<IDeleteReminder, DeleteReminder>()
                 .AddScoped<IGetEventByCalendar, GetEventByCalendar>()
-                .AddScoped<IRescheduleNotificationJob, RescheduleNotificationJob>();
+                .AddScoped<IScheduleNotificationJob, ScheduleNotificationJob>();
         }
     }
 }
