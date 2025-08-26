@@ -4,8 +4,8 @@
 
     public interface IScheduleNotificationJob
     {
-        Task CreateAsync(
-            CreateNotificationJobRequest request,
+        Task ScheduleAsync(
+            ScheduleNotificationJobRequest request,
             CancellationToken cancellationToken);
     }
 }

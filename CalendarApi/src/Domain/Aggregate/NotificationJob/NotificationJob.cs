@@ -21,16 +21,14 @@
 
         public Channel Channel { get; set; }
 
-        public DateTime StartTime { get; set; }
-
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return this.UUId;
         }
 
-        public void CalculateScheduledTime()
+        public void CalculateScheduledTime(DateTime eventStartTime)
         {
-            ScheduledTime = StartTime.AddMinutes(ReminderOffset);
+            ScheduledTime = eventStartTime.AddMinutes(ReminderOffset);
         }
 
         public void ValidateOffset()

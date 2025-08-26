@@ -2,7 +2,7 @@
 {
     using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Enums;
 
-    public class CreateNotificationJobRequest
+    public class ScheduleNotificationJobRequest
     {
         public Guid calendarId { get; set; }
 

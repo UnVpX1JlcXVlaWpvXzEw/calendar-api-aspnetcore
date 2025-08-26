@@ -24,16 +24,16 @@
             currentUserInfoProvider = provider.GetRequiredService<ICurrentUserInfoProvider>();
         }
 
-        public async Task CreateAsync(
-            CreateNotificationJobRequest request,
+        public async Task ScheduleAsync(
+            ScheduleNotificationJobRequest request,
             CancellationToken cancellationToken)
         {
-            var ownerId = await currentUserInfoProvider.GetUserId(cancellationToken);
+            var userId = await currentUserInfoProvider.GetUserId(cancellationToken);
 
             var calendar = await calendarRepository.GetAsync(request.calendarId, cancellationToken)
                 ?? throw new KeyNotFoundException("Calendar not found.");
 
-            if (calendar.OwnerId != ownerId)
+            if (calendar.OwnerId != userId)
                 throw new UnauthorizedAccessException("You are not authorized to add an event on this calendar.");
 
             var selectedEvent = await eventRepository.GetAsync(request.eventId, cancellationToken)
@@ -44,17 +44,16 @@
 
             var job = new NotificationJob
             {
-                TargetUserId = ownerId,
+                TargetUserId = userId,
                 EventId = selectedEvent.UUId,
                 CalendarId = calendar.UUId,
                 ReminderOffset = request.ReminderOffset,
-                StartTime = eventStart,
                 Channel = request.Channel,
                 Status = Status.PENDING
             };
 
             job.ValidateOffset();
-            job.CalculateScheduledTime();
+            job.CalculateScheduledTime(eventStart);
 
             await notificationJobRepository.AddAsync(job, cancellationToken);
 
