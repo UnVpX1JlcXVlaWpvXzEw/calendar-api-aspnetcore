@@ -8,6 +8,7 @@
     public class RescheduleNotificationJob : IRescheduleNotificationJob
     {
         private readonly ICalendarRepository calendarRepository;
+        private readonly IEventRepository eventRepository;
         private readonly INotificationJobRepository notificationJobRepository;
         private readonly ICurrentUserInfoProvider currentUserInfoProvider;
 
@@ -18,18 +19,19 @@
             notificationJobRepository = provider.GetRequiredService<INotificationJobRepository>();
             calendarRepository = provider.GetRequiredService<ICalendarRepository>();
             currentUserInfoProvider = provider.GetRequiredService<ICurrentUserInfoProvider>();
+            eventRepository = provider.GetRequiredService<IEventRepository>();
         }
 
-        public async Task UpdateNotificationJob(
-            UpdateNotificationJobRequest request,
+        public async Task RescheduleAsync(
+            RescheduleNotificationJobRequest request,
             CancellationToken cancellationToken)
         {
-            var ownerId = await currentUserInfoProvider.GetUserId(cancellationToken);
+            var userId = await currentUserInfoProvider.GetUserId(cancellationToken);
 
             var calendar = await calendarRepository.GetAsync(request.calendarId, cancellationToken)
                 ?? throw new KeyNotFoundException("Calendar not found.");
 
-            if (calendar.OwnerId != ownerId)
+            if (calendar.OwnerId != userId)
                 throw new UnauthorizedAccessException("You are not authorized to delete this calendar.");
 
             var job = await notificationJobRepository.GetAsync(request.notificationJobId, cancellationToken)
@@ -38,12 +40,18 @@
             if (job.CalendarId != calendar.UUId)
                 throw new KeyNotFoundException("Notification job does not belong to the specified calendar.");
 
+            var selectedEvent = await eventRepository.GetAsync(request.eventId, cancellationToken)
+               ?? throw new KeyNotFoundException("Event not found.");
+
+            var eventStart = selectedEvent.DateRange?.Start
+                ?? throw new InvalidOperationException("Event has no start time.");
+
             if (request.ReminderOffset.HasValue)
             {
                 job.ReminderOffset = request.ReminderOffset.Value;
 
                 job.ValidateOffset();
-                job.CalculateScheduledTime();
+                job.CalculateScheduledTime(eventStart);
             }
 
             if (request.Channel.HasValue)

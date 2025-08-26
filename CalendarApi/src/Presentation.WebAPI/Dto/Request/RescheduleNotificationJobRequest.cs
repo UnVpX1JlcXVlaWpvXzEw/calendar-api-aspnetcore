@@ -2,9 +2,11 @@
 {
     using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Enums;
 
-    public class UpdateNotificationJobRequest
+    public class RescheduleNotificationJobRequest
     {
         public Guid calendarId { get; set; }
+
+        public Guid eventId { get; set; }
 
         public Guid notificationJobId { get; set; }
 

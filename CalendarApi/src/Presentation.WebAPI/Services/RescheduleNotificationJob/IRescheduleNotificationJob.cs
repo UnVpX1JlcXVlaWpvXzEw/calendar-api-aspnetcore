@@ -4,8 +4,8 @@
 
     public interface IRescheduleNotificationJob
     {
-        Task UpdateNotificationJob(
-            UpdateNotificationJobRequest request,
+        Task RescheduleAsync(
+            RescheduleNotificationJobRequest request,
             CancellationToken cancellationToken);
     }
 }
