@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
 {
     [DbContext(typeof(CalendarAPIDbContext))]
-    [Migration("20250822162315_Expand API domain entities")]
-    partial class ExpandAPIdomainentities
+    [Migration("20250826164710_ExpandDomainEntitiesNotJob")]
+    partial class ExpandDomainEntitiesNotJob
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -218,9 +218,6 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ScheduledTime")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Status")

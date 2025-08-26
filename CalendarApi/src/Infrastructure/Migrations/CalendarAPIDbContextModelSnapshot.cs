@@ -217,9 +217,6 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
                     b.Property<DateTime>("ScheduledTime")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("longtext");
