@@ -246,7 +246,7 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("RuleId");
 
-                    b.OwnsOne("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.DateRange", "DateRange", b1 =>
+                    b.OwnsOne("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Event.DateRange#HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.DateRange", "DateRange", b1 =>
                         {
                             b1.Property<long>("EventId")
                                 .HasColumnType("bigint");
@@ -261,7 +261,7 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
 
                             b1.HasKey("EventId");
 
-                            b1.ToTable("Events");
+                            b1.ToTable("Events", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("EventId");
