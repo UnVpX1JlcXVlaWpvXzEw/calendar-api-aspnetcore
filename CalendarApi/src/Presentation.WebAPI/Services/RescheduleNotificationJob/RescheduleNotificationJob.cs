@@ -1,18 +1,17 @@
-﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.ExecutePendingJobs
+﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.RescheduleNotificationJob
 {
     using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Repository;
-    using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Enums;
     using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.NotificationJob.Repository;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Request;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.CurrentUserInfoProvider;
 
-    public class ExecutePendingJobs : IExecutePendingJobs
+    public class RescheduleNotificationJob : IRescheduleNotificationJob
     {
         private readonly ICalendarRepository calendarRepository;
         private readonly INotificationJobRepository notificationJobRepository;
         private readonly ICurrentUserInfoProvider currentUserInfoProvider;
 
-        public ExecutePendingJobs(IServiceProvider provider)
+        public RescheduleNotificationJob(IServiceProvider provider)
         {
             ArgumentNullException.ThrowIfNull(provider);
 
@@ -21,8 +20,8 @@
             currentUserInfoProvider = provider.GetRequiredService<ICurrentUserInfoProvider>();
         }
 
-        public async Task ExecuteAsync(
-            ExecutePendingJobsRequest request,
+        public async Task RescheduleAsync(
+            RescheduleNotificationJobRequest request,
             CancellationToken cancellationToken)
         {
             var userId = await currentUserInfoProvider.GetUserId(cancellationToken);
@@ -39,17 +38,22 @@
             if (job.CalendarId != calendar.UUId)
                 throw new KeyNotFoundException("Notification job does not belong to the specified calendar.");
 
-            if (job.Status != Status.PENDING)
-                throw new InvalidOperationException("Only PENDING jobs can be executed.");
+            var selectedEvent = calendar.Events.FirstOrDefault(x => x.UUId == request.EventId)
+               ?? throw new KeyNotFoundException("Event not found.");
 
-            if (job.ScheduledTime > DateTime.UtcNow)
-                throw new InvalidOperationException("Job is not due yet.");
+            var eventStart = selectedEvent.DateRange?.Start
+                ?? throw new InvalidOperationException("Event has no start time.");
 
-            job.Status = Status.SENT;
+            if (request.ReminderOffset.HasValue)
+            {
+                job.ReminderOffset = request.ReminderOffset.Value;
+
+                job.ValidateOffset();
+                job.CalculateScheduledTime(eventStart);
+            }
 
             await notificationJobRepository.Update(job, cancellationToken);
             await notificationJobRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
         }
-
     }
 }

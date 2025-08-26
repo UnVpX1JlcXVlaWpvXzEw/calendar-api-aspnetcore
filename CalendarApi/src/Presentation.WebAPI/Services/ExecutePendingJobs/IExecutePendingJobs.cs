@@ -4,8 +4,8 @@
 
     public interface IExecutePendingJobs
     {
-        Task ExecutePendingJobsAsync(
-            CalendarJobIdentifiersDto request,
+        Task ExecuteAsync(
+            ExecutePendingJobsRequest request,
             CancellationToken cancellationToken);
     }
 }
