@@ -3,7 +3,6 @@
     using HustleAddiction.Platform.CalendarApi.Domain.Services.EventOccurrenceService;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Request;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Response;
-    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CancelNotificationJob;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateCalendar;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateEvent;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteCalendar;
@@ -29,7 +28,6 @@
         private readonly IUpdateEvent updateEvent;
         private readonly IDeleteReminder deleteReminder;
         private readonly IGetEventByCalendar getEventOccurrences;
-        private readonly ICancelNotificationJob cancelNotificationJob;
 
         public CalendarController(IServiceProvider provider)
         {
@@ -43,7 +41,6 @@
             updateEvent = provider.GetRequiredService<IUpdateEvent>();
             deleteReminder = provider.GetRequiredService<IDeleteReminder>();
             getEventOccurrences = provider.GetRequiredService<IGetEventByCalendar>();
-            cancelNotificationJob = provider.GetRequiredService<ICancelNotificationJob>();
         }
 
         [HttpPost]

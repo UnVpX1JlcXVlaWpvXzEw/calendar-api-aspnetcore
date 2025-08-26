@@ -4,8 +4,8 @@
 
     public interface ICancelNotificationJob
     {
-        Task CancelNotificationJobAsync(
-            CalendarJobIdentifiersDto request,
+        Task CancelAsync(
+            CancelNotificationJobRequest request,
             CancellationToken cancellationToken);
     }
 }
