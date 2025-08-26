@@ -8,7 +8,6 @@
     public class RescheduleNotificationJob : IRescheduleNotificationJob
     {
         private readonly ICalendarRepository calendarRepository;
-        private readonly IEventRepository eventRepository;
         private readonly INotificationJobRepository notificationJobRepository;
         private readonly ICurrentUserInfoProvider currentUserInfoProvider;
 
@@ -19,7 +18,6 @@
             notificationJobRepository = provider.GetRequiredService<INotificationJobRepository>();
             calendarRepository = provider.GetRequiredService<ICalendarRepository>();
             currentUserInfoProvider = provider.GetRequiredService<ICurrentUserInfoProvider>();
-            eventRepository = provider.GetRequiredService<IEventRepository>();
         }
 
         public async Task RescheduleAsync(
@@ -40,7 +38,7 @@
             if (job.CalendarId != calendar.UUId)
                 throw new KeyNotFoundException("Notification job does not belong to the specified calendar.");
 
-            var selectedEvent = await eventRepository.GetAsync(request.EventId, cancellationToken)
+            var selectedEvent = calendar.Events.FirstOrDefault(x => x.UUId == request.EventId)
                ?? throw new KeyNotFoundException("Event not found.");
 
             var eventStart = selectedEvent.DateRange?.Start
