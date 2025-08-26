@@ -24,12 +24,12 @@
             CalendarJobIdentifiersDto request,
             CancellationToken cancellationToken)
         {
-            var ownerId = await currentUserInfoProvider.GetUserId(cancellationToken);
+            var userId = await currentUserInfoProvider.GetUserId(cancellationToken);
 
             var calendar = await calendarRepository.GetAsync(request.calendarId, cancellationToken)
                 ?? throw new KeyNotFoundException("Calendar not found.");
 
-            if (calendar.OwnerId != ownerId)
+            if (calendar.OwnerId != userId)
                 throw new UnauthorizedAccessException("You are not authorized to delete this calendar.");
 
             var job = await notificationJobRepository.GetAsync(request.notificationJobId, cancellationToken)

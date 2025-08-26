@@ -4,6 +4,7 @@ using HustleAddiction.Platform.CalendarApi.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
 {
     [DbContext(typeof(CalendarAPIDbContext))]
-    partial class CalendarAPIDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250826164710_ExpandDomainEntitiesNotJob")]
+    partial class ExpandDomainEntitiesNotJob
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -246,7 +249,7 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("RuleId");
 
-                    b.OwnsOne("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Event.DateRange#HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.DateRange", "DateRange", b1 =>
+                    b.OwnsOne("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.DateRange", "DateRange", b1 =>
                         {
                             b1.Property<long>("EventId")
                                 .HasColumnType("bigint");
@@ -261,7 +264,7 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
 
                             b1.HasKey("EventId");
 
-                            b1.ToTable("Events", (string)null);
+                            b1.ToTable("Events");
 
                             b1.WithOwner()
                                 .HasForeignKey("EventId");
