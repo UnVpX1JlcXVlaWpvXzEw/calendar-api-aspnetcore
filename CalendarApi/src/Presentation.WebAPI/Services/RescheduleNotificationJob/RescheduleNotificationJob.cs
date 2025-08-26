@@ -28,19 +28,19 @@
         {
             var userId = await currentUserInfoProvider.GetUserId(cancellationToken);
 
-            var calendar = await calendarRepository.GetAsync(request.calendarId, cancellationToken)
+            var calendar = await calendarRepository.GetAsync(request.CalendarId, cancellationToken)
                 ?? throw new KeyNotFoundException("Calendar not found.");
 
             if (calendar.OwnerId != userId)
                 throw new UnauthorizedAccessException("You are not authorized to delete this calendar.");
 
-            var job = await notificationJobRepository.GetAsync(request.notificationJobId, cancellationToken)
+            var job = await notificationJobRepository.GetAsync(request.NotificationJobId, cancellationToken)
                 ?? throw new KeyNotFoundException("Notification job not found.");
 
             if (job.CalendarId != calendar.UUId)
                 throw new KeyNotFoundException("Notification job does not belong to the specified calendar.");
 
-            var selectedEvent = await eventRepository.GetAsync(request.eventId, cancellationToken)
+            var selectedEvent = await eventRepository.GetAsync(request.EventId, cancellationToken)
                ?? throw new KeyNotFoundException("Event not found.");
 
             var eventStart = selectedEvent.DateRange?.Start
@@ -53,12 +53,6 @@
                 job.ValidateOffset();
                 job.CalculateScheduledTime(eventStart);
             }
-
-            if (request.Channel.HasValue)
-                job.Channel = request.Channel.Value;
-
-            if (request.Status.HasValue)
-                job.Status = request.Status.Value;
 
             await notificationJobRepository.Update(job, cancellationToken);
             await notificationJobRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
