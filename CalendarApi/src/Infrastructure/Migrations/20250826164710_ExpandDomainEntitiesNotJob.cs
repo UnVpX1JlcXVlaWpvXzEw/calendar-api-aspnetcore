@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class ExpandAPIdomainentities : Migration
+    public partial class ExpandDomainEntitiesNotJob : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -27,7 +27,6 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Channel = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    StartTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     ModificationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     UUId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
