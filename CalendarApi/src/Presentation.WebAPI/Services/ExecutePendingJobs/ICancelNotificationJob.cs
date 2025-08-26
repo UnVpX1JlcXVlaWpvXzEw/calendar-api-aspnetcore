@@ -1,4 +1,4 @@
-﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.ExecutePendingJobs
+﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CancelNotificationJob
 {
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Request;
 

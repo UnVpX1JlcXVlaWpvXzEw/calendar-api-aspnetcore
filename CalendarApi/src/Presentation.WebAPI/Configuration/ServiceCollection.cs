@@ -1,11 +1,11 @@
 ﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Configuration
 {
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CancelNotificationJob;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateCalendar;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateEvent;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteCalendar;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteEvent;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteReminder;
-    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.ExecutePendingJobs;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetCalendar;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetEventByCalendar;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.UpdateEvent;
