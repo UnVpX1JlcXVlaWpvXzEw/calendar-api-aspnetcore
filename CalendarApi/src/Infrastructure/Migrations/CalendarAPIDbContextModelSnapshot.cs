@@ -26,270 +26,270 @@ namespace HustleAddiction.Platform.CalendarApi.Infrastructure.Migrations
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
             modelBuilder.Entity("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Calendar", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+            {
+                b.Property<long>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("bigint");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+                MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime(6)");
+                b.Property<DateTime>("CreationDate")
+                    .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("ModificationDate")
-                        .IsConcurrencyToken()
-                        .HasColumnType("datetime(6)");
+                b.Property<DateTime>("ModificationDate")
+                    .IsConcurrencyToken()
+                    .HasColumnType("datetime(6)");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnType("varchar(100)");
 
-                    b.Property<Guid>("OwnerId")
-                        .HasColumnType("char(36)");
+                b.Property<Guid>("OwnerId")
+                    .HasColumnType("char(36)");
 
-                    b.Property<Guid>("UUId")
-                        .HasColumnType("char(36)");
+                b.Property<Guid>("UUId")
+                    .HasColumnType("char(36)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("UUId")
-                        .IsUnique();
+                b.HasIndex("UUId")
+                    .IsUnique();
 
-                    b.ToTable("Calendars", (string)null);
-                });
+                b.ToTable("Calendars", (string)null);
+            });
 
             modelBuilder.Entity("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Event", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+            {
+                b.Property<long>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("bigint");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+                MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("CalendarId")
-                        .HasColumnType("bigint");
+                b.Property<long?>("CalendarId")
+                    .HasColumnType("bigint");
 
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime(6)");
+                b.Property<DateTime>("CreationDate")
+                    .HasColumnType("datetime(6)");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("longtext");
+                b.Property<string>("Description")
+                    .HasColumnType("longtext");
 
-                    b.Property<string>("Location")
-                        .HasColumnType("longtext");
+                b.Property<string>("Location")
+                    .HasColumnType("longtext");
 
-                    b.Property<DateTime>("ModificationDate")
-                        .IsConcurrencyToken()
-                        .HasColumnType("datetime(6)");
+                b.Property<DateTime>("ModificationDate")
+                    .IsConcurrencyToken()
+                    .HasColumnType("datetime(6)");
 
-                    b.Property<long?>("RuleId")
-                        .HasColumnType("bigint");
+                b.Property<long?>("RuleId")
+                    .HasColumnType("bigint");
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200)");
+                b.Property<string>("Title")
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .HasColumnType("varchar(200)");
 
-                    b.Property<Guid>("UUId")
-                        .HasColumnType("char(36)");
+                b.Property<Guid>("UUId")
+                    .HasColumnType("char(36)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("CalendarId");
+                b.HasIndex("CalendarId");
 
-                    b.HasIndex("RuleId");
+                b.HasIndex("RuleId");
 
-                    b.HasIndex("UUId")
-                        .IsUnique();
+                b.HasIndex("UUId")
+                    .IsUnique();
 
-                    b.ToTable("Events", (string)null);
-                });
+                b.ToTable("Events", (string)null);
+            });
 
             modelBuilder.Entity("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.RecurrenceRule", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+            {
+                b.Property<long>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("bigint");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+                MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<int?>("Count")
-                        .HasColumnType("int");
+                b.Property<int?>("Count")
+                    .HasColumnType("int");
 
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime(6)");
+                b.Property<DateTime>("CreationDate")
+                    .HasColumnType("datetime(6)");
 
-                    b.Property<string>("Frequency")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                b.Property<string>("Frequency")
+                    .IsRequired()
+                    .HasColumnType("longtext");
 
-                    b.Property<DateTime>("ModificationDate")
-                        .IsConcurrencyToken()
-                        .HasColumnType("datetime(6)");
+                b.Property<DateTime>("ModificationDate")
+                    .IsConcurrencyToken()
+                    .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("Start")
-                        .HasColumnType("datetime(6)");
+                b.Property<DateTime>("Start")
+                    .HasColumnType("datetime(6)");
 
-                    b.Property<Guid>("UUId")
-                        .HasColumnType("char(36)");
+                b.Property<Guid>("UUId")
+                    .HasColumnType("char(36)");
 
-                    b.Property<DateTime?>("Until")
-                        .HasColumnType("datetime(6)");
+                b.Property<DateTime?>("Until")
+                    .HasColumnType("datetime(6)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("UUId")
-                        .IsUnique();
+                b.HasIndex("UUId")
+                    .IsUnique();
 
-                    b.ToTable("RecurrenceRules", (string)null);
-                });
+                b.ToTable("RecurrenceRules", (string)null);
+            });
 
             modelBuilder.Entity("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Reminder", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+            {
+                b.Property<long>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("bigint");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+                MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime(6)");
+                b.Property<DateTime>("CreationDate")
+                    .HasColumnType("datetime(6)");
 
-                    b.Property<bool>("Enabled")
-                        .HasColumnType("tinyint(1)");
+                b.Property<bool>("Enabled")
+                    .HasColumnType("tinyint(1)");
 
-                    b.Property<long?>("EventId")
-                        .HasColumnType("bigint");
+                b.Property<long?>("EventId")
+                    .HasColumnType("bigint");
 
-                    b.Property<string>("Method")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                b.Property<string>("Method")
+                    .HasMaxLength(50)
+                    .HasColumnType("varchar(50)");
 
-                    b.Property<DateTime>("ModificationDate")
-                        .IsConcurrencyToken()
-                        .HasColumnType("datetime(6)");
+                b.Property<DateTime>("ModificationDate")
+                    .IsConcurrencyToken()
+                    .HasColumnType("datetime(6)");
 
-                    b.Property<int>("OffsetInMinutes")
-                        .HasColumnType("int");
+                b.Property<int>("OffsetInMinutes")
+                    .HasColumnType("int");
 
-                    b.Property<Guid>("UUId")
-                        .HasColumnType("char(36)");
+                b.Property<Guid>("UUId")
+                    .HasColumnType("char(36)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("EventId");
+                b.HasIndex("EventId");
 
-                    b.HasIndex("UUId")
-                        .IsUnique();
+                b.HasIndex("UUId")
+                    .IsUnique();
 
-                    b.ToTable("Reminders", (string)null);
-                });
+                b.ToTable("Reminders", (string)null);
+            });
 
             modelBuilder.Entity("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.NotificationJob.NotificationJob", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+            {
+                b.Property<long>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("bigint");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+                MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<Guid>("CalendarId")
-                        .HasColumnType("char(36)");
+                b.Property<Guid>("CalendarId")
+                    .HasColumnType("char(36)");
 
-                    b.Property<string>("Channel")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                b.Property<string>("Channel")
+                    .IsRequired()
+                    .HasColumnType("longtext");
 
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime(6)");
+                b.Property<DateTime>("CreationDate")
+                    .HasColumnType("datetime(6)");
 
-                    b.Property<Guid>("EventId")
-                        .HasColumnType("char(36)");
+                b.Property<Guid>("EventId")
+                    .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("ModificationDate")
-                        .IsConcurrencyToken()
-                        .HasColumnType("datetime(6)");
+                b.Property<DateTime>("ModificationDate")
+                    .IsConcurrencyToken()
+                    .HasColumnType("datetime(6)");
 
-                    b.Property<int>("ReminderOffset")
-                        .HasColumnType("int");
+                b.Property<int>("ReminderOffset")
+                    .HasColumnType("int");
 
-                    b.Property<DateTime>("ScheduledTime")
-                        .HasColumnType("datetime(6)");
+                b.Property<DateTime>("ScheduledTime")
+                    .HasColumnType("datetime(6)");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                b.Property<string>("Status")
+                    .IsRequired()
+                    .HasColumnType("longtext");
 
-                    b.Property<Guid>("TargetUserId")
-                        .HasColumnType("char(36)");
+                b.Property<Guid>("TargetUserId")
+                    .HasColumnType("char(36)");
 
-                    b.Property<Guid>("UUId")
-                        .HasColumnType("char(36)");
+                b.Property<Guid>("UUId")
+                    .HasColumnType("char(36)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("UUId")
-                        .IsUnique();
+                b.HasIndex("UUId")
+                    .IsUnique();
 
-                    b.ToTable("NotificationJob", (string)null);
-                });
+                b.ToTable("NotificationJob", (string)null);
+            });
 
             modelBuilder.Entity("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Event", b =>
-                {
-                    b.HasOne("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Calendar", null)
-                        .WithMany("Events")
-                        .HasForeignKey("CalendarId")
-                        .OnDelete(DeleteBehavior.Cascade);
+            {
+                b.HasOne("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Calendar", null)
+                    .WithMany("Events")
+                    .HasForeignKey("CalendarId")
+                    .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.RecurrenceRule", "Rule")
-                        .WithMany()
-                        .HasForeignKey("RuleId");
+                b.HasOne("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.RecurrenceRule", "Rule")
+                    .WithMany()
+                    .HasForeignKey("RuleId");
 
                     b.OwnsOne("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Event.DateRange#HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.DateRange", "DateRange", b1 =>
                         {
                             b1.Property<long>("EventId")
                                 .HasColumnType("bigint");
 
-                            b1.Property<DateTime>("End")
-                                .HasColumnType("datetime(6)")
-                                .HasColumnName("EndTime");
+                    b1.Property<DateTime>("End")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("EndTime");
 
-                            b1.Property<DateTime>("Start")
-                                .HasColumnType("datetime(6)")
-                                .HasColumnName("StartTime");
+                    b1.Property<DateTime>("Start")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("StartTime");
 
-                            b1.HasKey("EventId");
+                    b1.HasKey("EventId");
 
                             b1.ToTable("Events", (string)null);
 
-                            b1.WithOwner()
-                                .HasForeignKey("EventId");
-                        });
-
-                    b.Navigation("DateRange")
-                        .IsRequired();
-
-                    b.Navigation("Rule");
+                    b1.WithOwner()
+                        .HasForeignKey("EventId");
                 });
+
+                b.Navigation("DateRange")
+                    .IsRequired();
+
+                b.Navigation("Rule");
+            });
 
             modelBuilder.Entity("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Reminder", b =>
-                {
-                    b.HasOne("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Event", null)
-                        .WithMany("Reminders")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
+            {
+                b.HasOne("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Event", null)
+                    .WithMany("Reminders")
+                    .HasForeignKey("EventId")
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
 
             modelBuilder.Entity("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Calendar", b =>
-                {
-                    b.Navigation("Events");
-                });
+            {
+                b.Navigation("Events");
+            });
 
             modelBuilder.Entity("HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Event", b =>
-                {
-                    b.Navigation("Reminders");
-                });
+            {
+                b.Navigation("Reminders");
+            });
 #pragma warning restore 612, 618
         }
     }
