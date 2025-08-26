@@ -1,5 +1,6 @@
 ﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Configuration
 {
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CancelNotificationJob;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateCalendar;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateEvent;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteCalendar;
@@ -8,8 +9,8 @@
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.ExecutePendingJobs;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetCalendar;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetEventByCalendar;
-    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.ScheduleNotificationJob;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.RescheduleNotificationJob;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.ScheduleNotificationJob;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.UpdateEvent;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.CurrentUserInfoProvider;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.DateTimeProvider;
@@ -41,7 +42,9 @@
                 .AddScoped<IDeleteReminder, DeleteReminder>()
                 .AddScoped<IGetEventByCalendar, GetEventByCalendar>()
                 .AddScoped<IScheduleNotificationJob, ScheduleNotificationJob>()
-                .AddScoped<IExecutePendingJobs, ExecutePendingJobs>();
+                .AddScoped<IRescheduleNotificationJob, RescheduleNotificationJob>()
+                .AddScoped<IExecutePendingJobs, ExecutePendingJobs>()
+                .AddScoped<ICancelNotificationJob, CancelNotificationJob>();
         }
     }
 }
