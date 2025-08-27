@@ -48,7 +48,7 @@
                 request.StartTime.UtcDateTime,
                 request.EndTime.UtcDateTime);
 
-            foreach (var r in request.Reminders)
+            foreach (var r in request.NotificationReminders)
             {
                 var reminder = new Reminder
                 {

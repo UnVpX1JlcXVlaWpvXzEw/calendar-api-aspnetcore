@@ -14,6 +14,6 @@
 
         public string Location { get; set; } = default!;
 
-        public List<NotificationReminderDto> Reminders { get; set; } = new();
+        public List<NotificationReminderDto> NotificationReminders { get; set; } = new();
     }
 }
