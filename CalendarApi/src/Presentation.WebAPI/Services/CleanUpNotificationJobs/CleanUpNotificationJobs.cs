@@ -9,7 +9,6 @@
         private readonly INotificationJobRepository notificationJobRepository;
         private readonly ICancelNotificationJob cancelNotificationJob;
 
-
         public CleanUpNotificationJobs(IServiceProvider provider)
         {
             ArgumentNullException.ThrowIfNull(provider);
