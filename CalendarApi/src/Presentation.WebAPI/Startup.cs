@@ -1,4 +1,6 @@
-﻿using HustleAddiction.Platform.CalendarApi.Domain.Configuration;
+﻿using Hangfire;
+using Hangfire.MemoryStorage;
+using HustleAddiction.Platform.CalendarApi.Domain.Configuration;
 using HustleAddiction.Platform.CalendarApi.Infrastructure;
 using HustleAddiction.Platform.CalendarApi.Infrastructure.Configuration;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Configuration;
@@ -58,6 +60,15 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI
             services.AddAutoMapper(typeof(Startup));
 
             services.AddSwagger();
+
+            services.AddHangfire(config =>
+            {
+                config.UseSimpleAssemblyNameTypeSerializer()
+                      .UseRecommendedSerializerSettings()
+                      .UseMemoryStorage();
+            });
+
+            services.AddHangfireServer();
         }
 
         public void Configure(WebApplication app)

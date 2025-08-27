@@ -9,6 +9,7 @@
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.ExecutePendingJobs;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetCalendar;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetEventByCalendar;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.NotificationDeliveryJob;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.RescheduleNotificationJob;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.ScheduleNotificationJob;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.UpdateEvent;
@@ -33,6 +34,7 @@
             services
                 .AddSingleton<IDateTimeProvider, DateTimeProvider>()
                 .AddScoped<ICurrentUserInfoProvider, CurrentUserInfoProvider>()
+                .AddScoped<NotificationDeliveryJob>()
                 .AddScoped<ICreateCalendar, CreateCalendar>()
                 .AddScoped<IGetCalendars, GetCalendars>()
                 .AddScoped<ICreateEvent, CreateEvent>()
