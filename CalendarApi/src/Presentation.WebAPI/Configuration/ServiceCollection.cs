@@ -1,6 +1,7 @@
 ﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Configuration
 {
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CancelNotificationJob;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CleanUpNotificationJobs;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateCalendar;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateEvent;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteCalendar;
@@ -34,7 +35,6 @@
             services
                 .AddSingleton<IDateTimeProvider, DateTimeProvider>()
                 .AddScoped<ICurrentUserInfoProvider, CurrentUserInfoProvider>()
-                .AddScoped<NotificationDeliveryJob>()
                 .AddScoped<ICreateCalendar, CreateCalendar>()
                 .AddScoped<IGetCalendars, GetCalendars>()
                 .AddScoped<ICreateEvent, CreateEvent>()
@@ -46,7 +46,9 @@
                 .AddScoped<IScheduleNotificationJob, ScheduleNotificationJob>()
                 .AddScoped<IRescheduleNotificationJob, RescheduleNotificationJob>()
                 .AddScoped<IExecutePendingJobs, ExecutePendingJobs>()
-                .AddScoped<ICancelNotificationJob, CancelNotificationJob>();
+                .AddScoped<ICancelNotificationJob, CancelNotificationJob>()
+                .AddScoped<INotificationDeliveryJob, NotificationDeliveryJob>()
+                .AddScoped<ICleanUpNotificationJobs, CleanUpNotificationJobs>();
         }
     }
 }

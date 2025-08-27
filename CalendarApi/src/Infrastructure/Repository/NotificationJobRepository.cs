@@ -19,5 +19,14 @@
                     e.ScheduledTime <= dateTime)
                 .ToListAsync(cancellationToken);
         }
+
+        public async Task<IReadOnlyList<NotificationJob>> GetByStatusAsync(
+        Status status,
+        CancellationToken cancellationToken)
+        {
+            return await this.Entities
+                .Where(e => e.Status == status)
+                .ToListAsync(cancellationToken);
+        }
     }
 }
