@@ -4,9 +4,9 @@
 
     public class ScheduleNotificationJobRequest
     {
-        public Guid calendarId { get; set; }
+        public Guid CalendarId { get; set; }
 
-        public Guid eventId { get; set; }
+        public Guid EventId { get; set; }
 
         public int ReminderOffset { get; set; }
 

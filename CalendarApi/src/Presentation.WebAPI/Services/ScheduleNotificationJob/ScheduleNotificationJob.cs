@@ -30,13 +30,13 @@
         {
             var userId = await currentUserInfoProvider.GetUserId(cancellationToken);
 
-            var calendar = await calendarRepository.GetAsync(request.calendarId, cancellationToken)
+            var calendar = await calendarRepository.GetAsync(request.CalendarId, cancellationToken)
                 ?? throw new KeyNotFoundException("Calendar not found.");
 
             if (calendar.OwnerId != userId)
                 throw new UnauthorizedAccessException("You are not authorized to add an event on this calendar.");
 
-            var selectedEvent = await eventRepository.GetAsync(request.eventId, cancellationToken)
+            var selectedEvent = await eventRepository.GetAsync(request.EventId, cancellationToken)
                 ?? throw new KeyNotFoundException("Event not found.");
 
             var eventStart = selectedEvent.DateRange?.Start
