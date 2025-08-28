@@ -6,8 +6,11 @@ using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Cors.Config
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Exception.Middleware;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Jwt.Common;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Swagger;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using System.Text;
 
 namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI
 {
@@ -23,27 +26,29 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI
 
             services.Configure<JwtOptions>(Configuration.GetSection(JwtOptions.SectionName));
 
-            //var jwtOptions = Configuration
-            //    .GetSection(JwtOptions.SectionName)
-            //    .Get<JwtOptions>();
+            var jwtOptions = Configuration
+                .GetSection(JwtOptions.SectionName)
+                .Get<JwtOptions>();
 
-            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //    .AddJwtBearer(options =>
-            //    {
-            //        options.TokenValidationParameters = new TokenValidationParameters
-            //        {
-            //            ValidateIssuer = true,
-            //            ValidateAudience = true,
-            //            ValidateLifetime = true,
-            //            ValidateIssuerSigningKey = true,
-            //            ValidIssuer = jwtOptions?.ValidIssuer,
-            //            ValidAudience = jwtOptions?.ValidAudience,
-            //            IssuerSigningKey = new SymmetricSecurityKey(key),
-            //            RequireExpirationTime = true
-            //        };
-            //    });
+            var issuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecurityKey));
 
-            //services.AddAuthorization();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = jwtOptions?.ValidIssuer,
+                        ValidAudience = jwtOptions?.ValidAudience,
+                        IssuerSigningKey = issuerSigningKey,
+                        RequireExpirationTime = true
+                    };
+                });
+
+            services.AddAuthorization();
 
             services.RegisterPresentationServices(Configuration);
             services.RegisterInfraredServices();
@@ -76,9 +81,9 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Calendar API V1");
             });
 
-            //app.UseAuthentication();
+            app.UseAuthentication();
 
-            //app.UseAuthorization();
+            app.UseAuthorization();
 
             app.MapControllers();
         }

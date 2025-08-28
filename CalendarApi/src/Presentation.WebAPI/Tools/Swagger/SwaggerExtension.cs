@@ -13,7 +13,7 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Swagger
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "User Management API",
+                    Title = "Calendar API",
                 });
 
                 var security = new OpenApiSecurityScheme()

@@ -17,16 +17,16 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Current
 
         public Task<Guid> GetUserId(CancellationToken cancellationToken = default)
         {
-            return Task.FromResult(Guid.Parse("08ddbfc8-56c3-48b0-873a-e8b0d52f997e"));
+            //return Task.FromResult(Guid.Parse("08ddbfc8-56c3-48b0-873a-e8b0d52f997e"));
 
-            //var user = httpContextAccessor.HttpContext?.User;
+            var user = httpContextAccessor.HttpContext?.User;
 
-            //if (user == null || !user.TryGetUserId(out var userId))
-            //{
-            //    throw new InvalidOperationException("Failed to get current user from HTTP context.");
-            //}
+            if (user == null || !user.TryGetUserId(out var userId))
+            {
+                throw new InvalidOperationException("Failed to get current user from HTTP context.");
+            }
 
-            //return Task.FromResult(userId);
+            return Task.FromResult(userId);
         }
 
         public Task<string> GetUsername()
