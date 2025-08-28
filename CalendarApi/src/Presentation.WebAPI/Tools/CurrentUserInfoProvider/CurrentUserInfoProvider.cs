@@ -17,7 +17,6 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Current
 
         public Task<Guid> GetUserId(CancellationToken cancellationToken = default)
         {
-            //return Task.FromResult(Guid.Parse("08ddbfc8-56c3-48b0-873a-e8b0d52f997e"));
 
             var user = httpContextAccessor.HttpContext?.User;
 
