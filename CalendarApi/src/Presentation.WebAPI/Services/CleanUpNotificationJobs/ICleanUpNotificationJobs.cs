@@ -2,6 +2,6 @@
 {
     public interface ICleanUpNotificationJobs
     {
-        Task RunAsync(CancellationToken cancellationToken);
+        Task CleanAsync(CancellationToken cancellationToken);
     }
 }

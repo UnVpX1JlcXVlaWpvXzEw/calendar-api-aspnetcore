@@ -2,6 +2,6 @@
 {
     public interface INotificationDeliveryJob
     {
-        Task RunAsync(CancellationToken cancellationToken);
+        Task DeliveryAsync(CancellationToken cancellationToken);
     }
 }

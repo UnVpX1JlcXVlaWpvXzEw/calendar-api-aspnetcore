@@ -17,12 +17,12 @@
             executePendingJobs = provider.GetRequiredService<IExecutePendingJobs>();
         }
 
-        public async Task RunAsync(CancellationToken cancellationToken)
+        public async Task DeliveryAsync(CancellationToken cancellationToken)
         {
-            var toDo = await notificationJobRepository
+            var pendingNotificationJobs = await notificationJobRepository
                 .GetPendingAsync(DateTime.UtcNow, cancellationToken);
 
-            foreach (var job in toDo)
+            foreach (var job in pendingNotificationJobs)
             {
                 if (
                     job.Status == Status.PENDING &&

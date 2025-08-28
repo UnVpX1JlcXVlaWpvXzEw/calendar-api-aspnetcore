@@ -21,8 +21,8 @@
         }
 
         public async Task<IReadOnlyList<NotificationJob>> GetByStatusAsync(
-        Status status,
-        CancellationToken cancellationToken)
+            Status status,
+            CancellationToken cancellationToken)
         {
             return await this.Entities
                 .Where(e => e.Status == status)

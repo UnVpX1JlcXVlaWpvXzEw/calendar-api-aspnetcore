@@ -17,7 +17,7 @@
             cancelNotificationJob = provider.GetRequiredService<ICancelNotificationJob>();
         }
 
-        public async Task RunAsync(CancellationToken cancellationToken)
+        public async Task CleanAsync(CancellationToken cancellationToken)
         {
             var toDelete = await notificationJobRepository
                 .GetByStatusAsync(Status.SENT, cancellationToken);
