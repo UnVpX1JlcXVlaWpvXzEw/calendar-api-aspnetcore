@@ -16,7 +16,7 @@
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.UpdateEvent;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.CurrentUserInfoProvider;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.DateTimeProvider;
-    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Hangfire;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.HangfireBackgroundJobs;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Jwt.Common;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;

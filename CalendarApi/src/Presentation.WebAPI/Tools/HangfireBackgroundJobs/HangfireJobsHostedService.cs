@@ -1,6 +1,6 @@
-﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Hangfire
+﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.HangfireBackgroundJobs
 {
-    using global::Hangfire;
+    using Hangfire;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CleanUpNotificationJobs;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.NotificationDeliveryJob;
 

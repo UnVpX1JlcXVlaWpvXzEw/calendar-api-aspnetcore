@@ -76,7 +76,7 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI
             services.AddHangfireServer();
 
             services.AddHostedService<
-                Tools.Hangfire.HangfireJobsHostedService>();
+                Tools.HangfireBackgroundJobs.HangfireJobsHostedService>();
         }
 
         public void Configure(WebApplication app)
