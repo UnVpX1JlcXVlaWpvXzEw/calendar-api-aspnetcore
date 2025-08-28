@@ -4,6 +4,7 @@
     using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Calendar.Repository;
     using HustleAddiction.Platform.CalendarApi.Domain.Aggregate.Enums;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Dto.Request;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.ScheduleNotificationJob;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.CurrentUserInfoProvider;
 
     public class UpdateEvent : IUpdateEvent
@@ -11,6 +12,7 @@
         private readonly ICalendarRepository calendarRepository;
         private readonly IEventRepository eventRepository;
         private readonly ICurrentUserInfoProvider currentUserInfoProvider;
+        private readonly IScheduleNotificationJob scheduleNotificationJob;
 
         public UpdateEvent(IServiceProvider provider)
         {
@@ -19,6 +21,7 @@
             calendarRepository = provider.GetRequiredService<ICalendarRepository>();
             eventRepository = provider.GetRequiredService<IEventRepository>();
             currentUserInfoProvider = provider.GetRequiredService<ICurrentUserInfoProvider>();
+            scheduleNotificationJob = provider.GetRequiredService<IScheduleNotificationJob>();
         }
 
         public async Task UpdateEventAsync(
@@ -45,16 +48,29 @@
                 request.StartTime.UtcDateTime,
                 request.EndTime.UtcDateTime);
 
-            foreach (var r in request.Reminders)
+            foreach (var notificationReminder in request.NotificationReminders)
             {
                 var reminder = new Reminder
                 {
-                    OffsetInMinutes = r.OffsetInMinutes,
-                    Method = (ReminderMethod?)r.Method,
-                    Enabled = r.Enabled
+                    OffsetInMinutes = notificationReminder.OffsetInMinutes,
+                    Method = (ReminderMethod?)notificationReminder.Method,
+                    Enabled = notificationReminder.Enabled
                 };
 
                 eventToUpdate.AddReminder(reminder);
+
+                if (reminder.Enabled)
+                {
+                    await scheduleNotificationJob.ScheduleAsync(
+                        new ScheduleNotificationJobRequest
+                        {
+                            CalendarId = calendarId,
+                            EventId = eventToUpdate.UUId,
+                            ReminderOffset = notificationReminder.OffsetInMinutes,
+                            Channel = notificationReminder.Channel
+                        },
+                        cancellationToken);
+                }
             }
 
             await eventRepository.Update(eventToUpdate, cancellationToken);
