@@ -48,13 +48,13 @@
                 request.StartTime.UtcDateTime,
                 request.EndTime.UtcDateTime);
 
-            foreach (var r in request.NotificationReminders)
+            foreach (var notificationReminder in request.NotificationReminders)
             {
                 var reminder = new Reminder
                 {
-                    OffsetInMinutes = r.OffsetInMinutes,
-                    Method = (ReminderMethod?)r.Method,
-                    Enabled = r.Enabled
+                    OffsetInMinutes = notificationReminder.OffsetInMinutes,
+                    Method = (ReminderMethod?)notificationReminder.Method,
+                    Enabled = notificationReminder.Enabled
                 };
 
                 eventToUpdate.AddReminder(reminder);
@@ -66,8 +66,8 @@
                         {
                             CalendarId = calendarId,
                             EventId = eventToUpdate.UUId,
-                            ReminderOffset = r.OffsetInMinutes,
-                            Channel = r.Channel
+                            ReminderOffset = notificationReminder.OffsetInMinutes,
+                            Channel = notificationReminder.Channel
                         },
                         cancellationToken);
                 }
