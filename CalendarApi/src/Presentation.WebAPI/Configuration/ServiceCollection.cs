@@ -1,6 +1,7 @@
 ﻿namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Configuration
 {
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CancelNotificationJob;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CleanUpNotificationJobs;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateCalendar;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.CreateEvent;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.DeleteCalendar;
@@ -9,11 +10,13 @@
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.ExecutePendingJobs;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetCalendar;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetEventByCalendar;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.NotificationDeliveryJob;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.RescheduleNotificationJob;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.ScheduleNotificationJob;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.UpdateEvent;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.CurrentUserInfoProvider;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.DateTimeProvider;
+    using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.HangfireBackgroundJobs;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Jwt.Common;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -31,6 +34,9 @@
                 .TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services
+                .AddHostedService<HangfireJobsHostedService>();
+
+            services
                 .AddSingleton<IDateTimeProvider, DateTimeProvider>()
                 .AddScoped<ICurrentUserInfoProvider, CurrentUserInfoProvider>()
                 .AddScoped<ICreateCalendar, CreateCalendar>()
@@ -44,7 +50,9 @@
                 .AddScoped<IScheduleNotificationJob, ScheduleNotificationJob>()
                 .AddScoped<IRescheduleNotificationJob, RescheduleNotificationJob>()
                 .AddScoped<IExecutePendingJobs, ExecutePendingJobs>()
-                .AddScoped<ICancelNotificationJob, CancelNotificationJob>();
+                .AddScoped<ICancelNotificationJob, CancelNotificationJob>()
+                .AddScoped<INotificationDeliveryJob, NotificationDeliveryJob>()
+                .AddScoped<ICleanUpNotificationJobs, CleanUpNotificationJobs>();
         }
     }
 }
