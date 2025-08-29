@@ -23,8 +23,7 @@
 
             foreach (var job in pendingNotificationJobs)
             {
-
-                job.DeliverNotification();
+                job.Send();
                 await notificationJobRepository.Update(job, cancellationToken);
             }
 
