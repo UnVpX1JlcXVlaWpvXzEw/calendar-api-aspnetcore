@@ -24,17 +24,15 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.ClaimsP
 
             userId = Guid.Empty;
 
-            var idClaim = principal.FindFirst("sub")
-                       ?? principal.FindFirst(ClaimTypes.NameIdentifier);
+            var idClaim =
+                principal.FindFirst(JwtClaimTypes.Id) ??
+                principal.FindFirst("id") ??
+                principal.FindFirst("sub") ??
+                principal.FindFirst(ClaimTypes.NameIdentifier);
 
-            if (idClaim is not null && Guid.TryParse(idClaim.Value, out var parsed))
-            {
-                userId = parsed;
-                return true;
-            }
-
-            return false;
+            return idClaim is not null
+                && Guid.TryParse(idClaim.Value, out userId)
+                && userId != Guid.Empty;
         }
-
     }
 }
