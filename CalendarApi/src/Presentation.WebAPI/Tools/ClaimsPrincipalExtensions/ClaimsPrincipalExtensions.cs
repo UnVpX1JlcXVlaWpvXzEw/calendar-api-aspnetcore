@@ -7,10 +7,14 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.ClaimsP
     {
         public static bool TryGetUsername(this ClaimsPrincipal principal, out string? username)
         {
+            ArgumentNullException.ThrowIfNull(principal, nameof(principal));
+
             username = principal.Claims
-                .FirstOrDefault(
-                c => c.Type == JwtClaimTypes.Name)?
-                .Value;
+                .FirstOrDefault(c =>
+                       c.Type == JwtClaimTypes.PreferredUserName ||
+                       c.Type == JwtClaimTypes.Name)
+                ?.Value;
+
             return !string.IsNullOrWhiteSpace(username);
         }
 
@@ -20,16 +24,15 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.ClaimsP
 
             userId = Guid.Empty;
 
-            var idClaim = principal.Claims.FirstOrDefault(
-                c => c.Type == JwtClaimTypes.Id);
+            var idClaim =
+                principal.FindFirst(JwtClaimTypes.Id) ??
+                principal.FindFirst("id") ??
+                principal.FindFirst("sub") ??
+                principal.FindFirst(ClaimTypes.NameIdentifier);
 
-            if (idClaim is not null)
-            {
-                userId = Guid.Parse(idClaim.Value);
-                return true;
-            }
-
-            return false;
+            return idClaim is not null
+                && Guid.TryParse(idClaim.Value, out userId)
+                && userId != Guid.Empty;
         }
     }
 }

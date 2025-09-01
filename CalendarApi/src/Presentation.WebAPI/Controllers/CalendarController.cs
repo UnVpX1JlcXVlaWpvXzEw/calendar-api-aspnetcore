@@ -12,12 +12,14 @@
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.GetEventByCalendar;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Services.UpdateEvent;
     using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Exception.Common;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System.Net;
 
 
     [Route("api/v1/[controller]")]
     [ApiController]
+    [Authorize]
     public class CalendarController : ControllerBase
     {
         private readonly ICreateCalendar createCalendar;
