@@ -36,5 +36,10 @@
             if (ReminderOffset > 0)
                 throw new ArgumentException("ReminderOffset must be less than or equal to 0.");
         }
+
+        public void Send()
+        {
+            Status = Status.SENT;
+        }
     }
 }

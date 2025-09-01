@@ -1,4 +1,6 @@
-﻿using HustleAddiction.Platform.CalendarApi.Domain.Configuration;
+﻿using Hangfire;
+using Hangfire.MySql;
+using HustleAddiction.Platform.CalendarApi.Domain.Configuration;
 using HustleAddiction.Platform.CalendarApi.Infrastructure;
 using HustleAddiction.Platform.CalendarApi.Infrastructure.Configuration;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Configuration;
@@ -63,6 +65,23 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI
             services.AddAutoMapper(typeof(Startup));
 
             services.AddSwagger();
+
+            services.AddHangfire(cfg =>
+            {
+                cfg.UseSimpleAssemblyNameTypeSerializer()
+                   .UseRecommendedSerializerSettings()
+                   .UseStorage(new MySqlStorage(
+                       Configuration.GetConnectionString("Hangfire"),
+                       new MySqlStorageOptions
+                       {
+                           PrepareSchemaIfNecessary = true
+                       }));
+            });
+
+            services.AddHangfireServer();
+
+            services.AddHostedService<
+                Tools.HangfireBackgroundJobs.HangfireJobsHostedService>();
         }
 
         public void Configure(WebApplication app)
