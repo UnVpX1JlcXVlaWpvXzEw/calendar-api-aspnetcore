@@ -7,6 +7,7 @@ using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Configuration;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Cors.Configuration;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Exception.Middleware;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Jwt.Common;
+using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.RabbitMqService;
 using HustleAddiction.Platform.CalendarApi.Presentation.WebAPI.Tools.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -82,6 +83,8 @@ namespace HustleAddiction.Platform.CalendarApi.Presentation.WebAPI
 
             services.AddHostedService<
                 Tools.HangfireBackgroundJobs.HangfireJobsHostedService>();
+
+            RabbitMqServiceRegistrar.Register(services, Configuration);
         }
 
         public void Configure(WebApplication app)
